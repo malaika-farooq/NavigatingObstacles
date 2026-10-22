@@ -8,13 +8,20 @@ import math
 from geometry import distance, wrap_degrees
 
 
-def next_segment(pose, waypoint):
-    """Calculate the next turn/travel from actual estimated pose, not old plan lengths."""
-    length = distance(pose, waypoint)
-    if length < 1e-9:
-        return (pose[2], 0.0)
-    heading = math.degrees(math.atan2(waypoint[1] - pose[1], waypoint[0] - pose[0]))
-    return (wrap_degrees(heading), length)
+def next_segment(pose, waypoint, output=None):
+    """Heading and distance from current pose; optional two-value output buffer."""
+    remaining_m = distance(pose, waypoint)
+    target_heading_deg = pose[2]
+    if remaining_m >= 1e-9:
+        difference_x_m = waypoint[0] - pose[0]
+        difference_y_m = waypoint[1] - pose[1]
+        target_heading_rad = math.atan2(difference_y_m, difference_x_m)
+        target_heading_deg = wrap_degrees(math.degrees(target_heading_rad))
+    if output is None:
+        return target_heading_deg, remaining_m
+    output[0] = target_heading_deg
+    output[1] = remaining_m
+    return output
 
 
 class MotionSession:

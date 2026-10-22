@@ -43,22 +43,34 @@ def find(root, address_suffix, expected_driver):
     return device["path"]
 
 
+def _motor_snapshot(device):
+    path = device["path"]
+    device["position"] = read(path, "position")
+    device["speed"] = read(path, "speed")
+    device["state"] = read(path, "state")
+    return device
+
+
+def _sensor_snapshot(device):
+    path = device["path"]
+    device["mode"] = read(path, "mode")
+    device["decimals"] = read(path, "decimals")
+    device["units"] = read(path, "units")
+    value_count = int(read(path, "num_values"))
+    device["values"] = []
+    for value_index in range(value_count):
+        attribute_name = "value" + str(value_index)
+        device["values"].append(read(path, attribute_name))
+    return device
+
+
 def snapshot():
-    result = []
+    readings = []
     for device in discover(MOTOR_ROOT):
-        device["position"] = read(device["path"], "position")
-        device["speed"] = read(device["path"], "speed")
-        device["state"] = read(device["path"], "state")
-        result.append(device)
+        readings.append(_motor_snapshot(device))
     for device in discover(SENSOR_ROOT):
-        path = device["path"]
-        device["mode"] = read(path, "mode")
-        device["decimals"] = read(path, "decimals")
-        device["units"] = read(path, "units")
-        device["values"] = [read(path, "value" + str(i))
-                            for i in range(int(read(path, "num_values")))]
-        result.append(device)
-    return result
+        readings.append(_sensor_snapshot(device))
+    return readings
 
 
 class Motor:
@@ -84,10 +96,14 @@ class Motor:
         self.enabled = False
 
     def angle_degrees(self):
-        return self.sign * int(read(self.path, "position")) * 360.0 / self.counts_per_rotation
+        encoder_counts = int(read(self.path, "position"))
+        motor_rotations = encoder_counts / self.counts_per_rotation
+        return self.sign * motor_rotations * 360.0
 
     def speed_degrees_s(self):
-        return self.sign * int(read(self.path, "speed")) * 360.0 / self.counts_per_rotation
+        encoder_counts_per_s = int(read(self.path, "speed"))
+        motor_rotations_per_s = encoder_counts_per_s / self.counts_per_rotation
+        return self.sign * motor_rotations_per_s * 360.0
 
     def enable(self):
         self.stop()
@@ -100,14 +116,17 @@ class Motor:
             raise ValueError("Motor output is not enabled")
         if not (-self.max_duty <= duty <= self.max_duty):
             raise ValueError("Requested motor duty exceeds configured limit")
-        write(self.path, "duty_cycle_sp", int(round(self.sign * duty)))
+        raw_duty_percent = int(round(self.sign * duty))
+        write(self.path, "duty_cycle_sp", raw_duty_percent)
 
     def stop(self):
         try:
             write(self.path, "stop_action", "brake")
         finally:
-            write(self.path, "command", "stop")
-            self.enabled = False
+            try:
+                write(self.path, "command", "stop")
+            finally:
+                self.enabled = False
 
 
 class Sensor:
@@ -125,7 +144,10 @@ class Sensor:
     def value(self, expected_mode):
         if read(self.path, "mode") != expected_mode:
             raise ValueError("Sensor mode changed; reinitialize before continuing")
-        return int(read(self.path, "value0")) / (10.0 ** int(read(self.path, "decimals")))
+        raw_value = int(read(self.path, "value0"))
+        decimal_places = int(read(self.path, "decimals"))
+        unit_scale = 10.0 ** decimal_places
+        return raw_value / unit_scale
 
 
 class Gyro(Sensor):

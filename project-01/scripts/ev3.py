@@ -32,7 +32,7 @@ def source_digest(files):
     return digest.hexdigest()
 
 
-def main():
+def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--host", default=os.environ.get("EV3_HOST", "ev3dev.local"))
     parser.add_argument("--user", default=os.environ.get("EV3_USER", "robot"))
@@ -40,76 +40,134 @@ def main():
     parser.add_argument("command", choices=("deploy", "runtime", "inspect", "selftest",
                                           "plan-demo", "plan", "monitor", "fetch-logs"))
     parser.add_argument("--samples", type=int, default=20)
-    args = parser.parse_args()
-    if not args.host or args.host.startswith("-") or any(c.isspace() for c in args.host):
+    arguments = parser.parse_args()
+    invalid_host = not arguments.host or arguments.host.startswith("-")
+    if invalid_host or any(character.isspace() for character in arguments.host):
         parser.error("Invalid host")
-    if not args.user or not all(c.isalnum() or c in "_-" for c in args.user):
+    valid_user = arguments.user and all(character.isalnum() or character in "_-" for character in arguments.user)
+    if not valid_user:
         parser.error("Invalid user")
-    options = ["-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=accept-new"]
-    if args.known_hosts:
-        options.extend(["-o", "UserKnownHostsFile=" + args.known_hosts])
-    target = args.user + "@" + args.host
-    scp_target = args.user + "@" + ("[" + args.host + "]" if ":" in args.host else args.host)
+    if not 1 <= arguments.samples <= 600:
+        parser.error("--samples must be between 1 and 600")
+    return arguments
 
-    def ssh(command):
-        subprocess.run(["ssh"] + options + [target, command], check=True)
 
-    def copy(paths, destination):
-        subprocess.run(["scp", "-O"] + options + list(map(str, paths)) + [destination], check=True)
+class Connection:
+    def __init__(self, arguments):
+        self.options = ["-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=accept-new"]
+        if arguments.known_hosts:
+            self.options.extend(["-o", "UserKnownHostsFile=" + arguments.known_hosts])
+        self.target = arguments.user + "@" + arguments.host
+        scp_host = "[" + arguments.host + "]" if ":" in arguments.host else arguments.host
+        self.scp_target = arguments.user + "@" + scp_host
 
-    if args.command == "deploy":
-        files = sorted((PROJECT / "src").glob("*.py"))
-        timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        digest = source_digest(files)
-        release = timestamp + "-" + digest[:12]
-        directory = REMOTE + "/releases/" + release
-        status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"],
-                                cwd=PROJECT, text=True, capture_output=True)
-        manifest = {"git_commit": git_revision(), "working_tree_dirty": bool(status.stdout.strip()),
-                    "source_sha256": digest, "deployed_utc": timestamp,
-                    "runtime": "pybricks-micropython 2.0.0", "robot_packages": [],
-                    "files": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in files}}
-        ssh("mkdir -p " + shlex.quote(directory) + " " + shlex.quote(REMOTE + "/logs"))
-        with tempfile.TemporaryDirectory(prefix="ev3-deploy-") as temporary:
-            meta = Path(temporary) / "deployment.json"
-            meta.write_text(json.dumps(manifest, indent=2) + "\n")
-            copy(files + [meta], scp_target + ":" + directory + "/")
-        # Verify every uploaded byte before changing the current release link.
-        verifier = ("import hashlib,json; from pathlib import Path; "
-                    "p=Path(" + repr(directory) + "); "
-                    "m=json.loads((p/'deployment.json').read_text()); "
-                    "assert all(hashlib.sha256((p/n).read_bytes()).hexdigest()==h "
-                    "for n,h in m['files'].items()), 'upload checksum mismatch'")
-        ssh("python3 -c " + shlex.quote(verifier))
-        ssh("cd " + shlex.quote(REMOTE) + " && ln -sfn " + shlex.quote("releases/" + release) +
-            " current.next && mv -Tf current.next current")
-        print("Deployed", release, "(no program started)")
-    elif args.command == "runtime":
-        check = ('import sys, os, time, math; print(sys.implementation); '
-                 'print("sysfs", os.listdir("/sys/class/tacho-motor")); '
-                 'print("timing", hasattr(time,"ticks_ms"), hasattr(time,"ticks_diff"))')
-        ssh("hostname; uname -r; cat /etc/os-release; "
-            "brickrun -r -- pybricks-micropython -c " + shlex.quote(check))
-    elif args.command == "fetch-logs":
-        destination = PROJECT / "logs" / datetime.datetime.now().strftime("download-%Y%m%dT%H%M%S")
-        destination.mkdir(parents=True)
-        subprocess.run(["scp", "-O", "-r"] + options +
-                       [scp_target + ":" + REMOTE + "/logs/.", str(destination)], check=True)
-        print("Saved logs to", destination)
+    def run(self, remote_command):
+        command = ["ssh"] + self.options + [self.target, remote_command]
+        subprocess.run(command, check=True)
+
+    def upload(self, paths, directory):
+        destination = self.scp_target + ":" + directory + "/"
+        command = ["scp", "-O"] + self.options + list(map(str, paths)) + [destination]
+        subprocess.run(command, check=True)
+
+    def download_logs(self, destination):
+        remote_logs = self.scp_target + ":" + REMOTE + "/logs/."
+        command = ["scp", "-O", "-r"] + self.options + [remote_logs, str(destination)]
+        subprocess.run(command, check=True)
+
+
+def deployment_manifest(files, timestamp):
+    status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"],
+                            cwd=PROJECT, text=True, capture_output=True)
+    file_checksums = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
+    return {"git_commit": git_revision(), "working_tree_dirty": bool(status.stdout.strip()),
+            "source_sha256": source_digest(files), "deployed_utc": timestamp,
+            "runtime": "pybricks-micropython 2.0.0", "robot_packages": [], "files": file_checksums}
+
+
+def upload_release(connection, files, manifest, directory):
+    connection.run("mkdir -p " + shlex.quote(directory) + " " + shlex.quote(REMOTE + "/logs"))
+    with tempfile.TemporaryDirectory(prefix="ev3-deploy-") as temporary:
+        manifest_path = Path(temporary) / "deployment.json"
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+        connection.upload(files + [manifest_path], directory)
+
+
+def verify_release(connection, directory):
+    verifier = ("import hashlib,json; from pathlib import Path; "
+                "p=Path(" + repr(directory) + "); "
+                "m=json.loads((p/'deployment.json').read_text()); "
+                "assert all(hashlib.sha256((p/n).read_bytes()).hexdigest()==h "
+                "for n,h in m['files'].items()), 'upload checksum mismatch'")
+    connection.run("python3 -c " + shlex.quote(verifier))
+
+
+def publish_release(connection, release):
+    release_target = shlex.quote("releases/" + release)
+    publish_command = ("cd " + shlex.quote(REMOTE) + " && ln -sfn " + release_target +
+                       " current.next && mv -Tf current.next current")
+    connection.run(publish_command)
+
+
+def deploy(connection):
+    files = sorted((PROJECT / "src").glob("*.py"))
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    manifest = deployment_manifest(files, timestamp)
+    release = timestamp + "-" + manifest["source_sha256"][:12]
+    directory = REMOTE + "/releases/" + release
+    upload_release(connection, files, manifest, directory)
+    verify_release(connection, directory)
+    publish_release(connection, release)
+    print("Deployed", release, "(no program started)")
+
+
+def inspect_runtime(connection):
+    check = ('import sys, os, time, math, gc; print(sys.implementation); '
+             'print("sysfs", os.listdir("/sys/class/tacho-motor")); '
+             'print("timing", hasattr(time,"ticks_ms"), hasattr(time,"ticks_diff")); '
+             'print("gc.collect", hasattr(gc,"collect")); '
+             'print("heap_free", gc.mem_free() if hasattr(gc,"mem_free") else "unavailable")')
+    command = ("hostname; uname -r; cat /etc/os-release; "
+               "brickrun -r -- pybricks-micropython -c " + shlex.quote(check))
+    connection.run(command)
+
+
+def fetch_logs(connection):
+    timestamp = datetime.datetime.now().strftime("download-%Y%m%dT%H%M%S")
+    destination = PROJECT / "logs" / timestamp
+    destination.mkdir(parents=True)
+    connection.download_logs(destination)
+    print("Saved logs to", destination)
+
+
+def monitor_command(sample_count):
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    log_path = REMOTE + "/logs/monitor-" + timestamp + ".txt"
+    quoted_log = shlex.quote(log_path)
+    return ("brickrun -r -- pybricks-micropython main.py monitor " + str(sample_count) +
+            " > " + quoted_log + "; result=$?; cat " + quoted_log + "; exit $result")
+
+
+def run_project_command(connection, arguments):
+    if arguments.command == "monitor":
+        program_command = monitor_command(arguments.samples)
     else:
-        command = "cd " + shlex.quote(REMOTE + "/current") + " && "
-        if args.command == "monitor":
-            if not 1 <= args.samples <= 600:
-                parser.error("--samples must be between 1 and 600")
-            stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-            remote_log = REMOTE + "/logs/monitor-" + stamp + ".txt"
-            # Logs are diagnostic snapshots, not a fixed-rate control-loop log.
-            command += ("brickrun -r -- pybricks-micropython main.py monitor " + str(args.samples) +
-                        " > " + shlex.quote(remote_log) + "; result=$?; cat " +
-                        shlex.quote(remote_log) + "; exit $result")
-        else:
-            command += "brickrun -r -- pybricks-micropython main.py " + shlex.quote(args.command)
-        ssh(command)
+        program_command = "brickrun -r -- pybricks-micropython main.py " + shlex.quote(arguments.command)
+    remote_command = "cd " + shlex.quote(REMOTE + "/current") + " && " + program_command
+    connection.run(remote_command)
+
+
+def main():
+    arguments = parse_arguments()
+    connection = Connection(arguments)
+    if arguments.command == "deploy":
+        deploy(connection)
+    elif arguments.command == "runtime":
+        inspect_runtime(connection)
+    elif arguments.command == "fetch-logs":
+        fetch_logs(connection)
+    else:
+        run_project_command(connection, arguments)
 
 
 if __name__ == "__main__":

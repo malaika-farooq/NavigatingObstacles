@@ -6,4 +6,4 @@ Record motor forward signs, gyro CCW sign, effective wheel diameters, track widt
 
 Begin with raised-wheel direction checks, stationary gyro drift, repeated straight/turn trials, and full-route clearance/error trials. Physical tests are a later step; the starter CLI does not move the robot. Do not mark `CALIBRATED = True` until measurements and control-loop validation support it. A controller also needs an independent watchdog/abort path before raw motor outputs are used.
 
-Seam correction starts disabled. Record evidence before using floor seams as landmarks. Refer to `../build-plan/ev3-build-plan.pdf` for the test worksheet; its sketches are conceptual and may show a different caster arrangement. This robot's caster is at the front and drive wheels are at the rear.
+Seam correction is outside the current implementation. Refer to `../build-plan/ev3-build-plan.pdf` for the test worksheet; its sketches are conceptual and may show a different caster arrangement. This robot's caster is at the front and drive wheels are at the rear.

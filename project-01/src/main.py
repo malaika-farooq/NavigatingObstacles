@@ -1,53 +1,88 @@
 #!/usr/bin/env pybricks-micropython
-"""Nonmoving entrypoints. No robot framework imports and no automatic execution."""
+"""Nonmoving project commands. No external robotics library imports."""
+import gc
 import sys
 import config
 
 
-def main(args):
-    command = args[0] if args else "inspect"
+def inspect_devices():
+    from hardware import snapshot
+    print("Runtime:", sys.implementation)
+    print("Left motor:", config.LEFT_MOTOR_PORT, "Right motor:", config.RIGHT_MOTOR_PORT)
+    print("Gyro input:", config.GYRO_PORT, "Color input:", config.COLOR_PORT)
+    print("CALIBRATED:", config.CALIBRATED, "ID:", config.CALIBRATION_ID)
+    if hasattr(gc, "mem_free"):
+        print("MicroPython free heap bytes:", gc.mem_free())
+    devices = snapshot()
+    if not devices:
+        print("No ev3dev motor/sensor devices found")
+    for device in devices:
+        print(device)
+    print("Read-only inspection: no device commands sent")
+
+
+def monitor_devices(arguments):
+    import time
+    from hardware import snapshot
+    sample_count = int(arguments[0]) if arguments else 20
+    if not 1 <= sample_count <= 600:
+        raise ValueError("Sample count must be between 1 and 600")
+    for sample_index in range(sample_count):
+        readings = snapshot()
+        print("sample", sample_index, readings)
+        time.sleep(0.1)
+
+
+def configured_path():
+    from planner import plan
+    config.require_geometry()
+    if config.POSITION_ERROR_ALLOWANCE_M is None:
+        raise ValueError("Set measured POSITION_ERROR_ALLOWANCE_M")
+    assigned_course = config.course()
+    robot_radius_m = config.FOOTPRINT_RADIUS_M
+    position_allowance_m = config.POSITION_ERROR_ALLOWANCE_M
+    return plan(assigned_course, robot_radius_m, position_allowance_m, config.GRID_SPACING_M)
+
+
+def demo_path():
+    from planner import demo_course, plan
+    print("SYNTHETIC DEMO ONLY: not the assignment course")
+    illustrative_radius_m = 0.15
+    illustrative_error_m = 0.03
+    illustrative_grid_spacing_m = 0.1
+    return plan(demo_course(), illustrative_radius_m, illustrative_error_m, illustrative_grid_spacing_m)
+
+
+def print_path(path):
+    # Planner search containers are no longer needed; motors are not enabled.
+    gc.collect()
+    for position_m in path:
+        print("waypoint_m", position_m[0], position_m[1])
+    print("Plan only: no motor outputs")
+
+
+def simulate_demo():
+    from simulation import run_demo
+    print("SYNTHETIC SIMULATION ONLY: fictional geometry/gains, no hardware")
+    result = run_demo()
+    print(result)
+
+
+def main(arguments):
+    command = arguments[0] if arguments else "inspect"
     if command == "inspect":
-        from hardware import snapshot
-        print("Runtime:", sys.implementation)
-        print("Configuration:", config.RUNTIME)
-        print("Left motor:", config.LEFT_MOTOR_PORT, "Right motor:", config.RIGHT_MOTOR_PORT)
-        print("CALIBRATED:", config.CALIBRATED, "ID:", config.CALIBRATION_ID)
-        devices = snapshot()
-        if not devices:
-            print("No ev3dev motor/sensor devices found")
-        for device in devices:
-            print(device)
-        print("Read-only inspection: no motor or sensor-mode commands sent")
+        inspect_devices()
+    elif command == "monitor":
+        monitor_devices(arguments[1:])
+    elif command == "plan":
+        print_path(configured_path())
+    elif command == "plan-demo":
+        print_path(demo_path())
+    elif command == "simulate-demo":
+        simulate_demo()
     elif command == "selftest":
         from selftest import run
         run()
-    elif command == "simulate-demo":
-        from simulation import run_demo
-        print("SYNTHETIC SIMULATION ONLY: fictional geometry/gains, no hardware")
-        print(run_demo())
-    elif command in ("plan", "plan-demo"):
-        from planner import demo_course, plan
-        if command == "plan-demo":
-            print("SYNTHETIC DEMO ONLY: not the assignment course")
-            path = plan(demo_course(), 0.15, 0.03, 0.1)
-        else:
-            config.require_geometry()
-            if config.POSITION_ERROR_ALLOWANCE_M is None:
-                raise ValueError("Set measured POSITION_ERROR_ALLOWANCE_M")
-            path = plan(config.course(), config.FOOTPRINT_RADIUS_M,
-                        config.POSITION_ERROR_ALLOWANCE_M, config.GRID_SPACING_M)
-        for point in path:
-            print("waypoint_m", point[0], point[1])
-        print("Plan only: no motor outputs")
-    elif command == "monitor":
-        import time
-        from hardware import snapshot
-        count = int(args[1]) if len(args) > 1 else 20
-        if not 1 <= count <= 600:
-            raise ValueError("Sample count must be between 1 and 600")
-        for i in range(count):
-            print("sample", i, snapshot())
-            time.sleep(0.1)
     else:
         raise ValueError("Commands: inspect, selftest, simulate-demo, plan-demo, plan, monitor [samples]")
 

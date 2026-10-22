@@ -121,7 +121,7 @@ class HardwareBoundaryTests(unittest.TestCase):
             config.require_motion_calibration()
 
     def test_robot_imports_are_builtin_only(self):
-        allowed = {"os", "sys", "time", "math"} | {p.stem for p in SRC.glob("*.py")}
+        allowed = {"os", "sys", "time", "math", "gc"} | {p.stem for p in SRC.glob("*.py")}
         for path in SRC.glob("*.py"):
             tree = ast.parse(path.read_text())
             for node in ast.walk(tree):

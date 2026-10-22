@@ -2,6 +2,8 @@
 
 This work does not connect to the EV3, change firmware, enable motor outputs, or fill in actual calibration. Robot-side code continues to use built-in modules and our own implementation only. Stay on the selected Pybricks 2 runtime.
 
+The current implementation is limited to the PDF's known-course navigation task. Small functions separate sample validation, odometry, steering, waypoint transitions and grid search. Intermediate variables name the physical quantities and units. The simulator and its logs are test support for the report; the optional plotting tool and unused seam-correction switch have been removed.
+
 ## What has been added
 
 `src/navigation.py` contains a sampled waypoint controller. The caller supplies a monotonic timestamp in seconds, two forward-positive encoder angles, and a continuous counterclockwise-positive gyro angle. The controller returns left/right raw-duty requests, estimated pose, waypoint index, state and fault reason. It has no device or clock access.
@@ -41,9 +43,9 @@ Current scenarios and observed model results:
 | Unequal motor response | DONE | About 11 mm; feedback compensates in this model |
 | One-degree sensor quantization | DONE | About 12 mm; no inflated-clearance violations |
 | 15% equal-wheel traction loss | DONE | About 339 mm target error; inflated-clearance violations |
-| 0.1 degree/s gyro drift | DONE | About 125 mm target error |
+| 0.1 degree/s gyro drift | DONE | About 125 mm error; still inside the PDF's 305 mm goal radius |
 
-The last two cases are intentional demonstrations of limitations. **`DONE` means the estimator believes it reached the final waypoint.** `simulation_pass`/`truth_pass` additionally checks the simulated true target error and clearance. The robot will not have access to simulated true pose, and gyro/encoder agreement cannot prove that slip is absent.
+The last two cases demonstrate localization limitations. **`DONE` means the estimator believes it reached the final waypoint.** `simulation_pass`/`truth_pass` additionally checks that the simulated robot center is inside the PDF's 0.305 m goal radius and that its footprint clearance was maintained. The small waypoint tolerance is not an extra assignment requirement. The drift case has substantial pose error but still passes these task checks; the slip case fails. The footprint check uses the conservative robot-envelope model without the planner's extra position-error allowance. The robot will not have access to simulated true pose, and gyro/encoder agreement cannot prove that slip is absent. The PDF does not precisely define whether the whole footprint or the robot center must enter the goal; the simulation uses the center and the demonstration criterion still needs confirmation.
 
 The model does not reproduce actual EV3 friction, latency, caster motion, chassis flex, floor seams, illumination, sensor noise distributions or gyro temperature effects. Passing model scenarios validates logic, not physical navigation reliability.
 
@@ -58,17 +60,19 @@ python3 project-01/src/main.py simulate-demo
 python3 project-01/scripts/simulate.py
 ```
 
-There are **35 local behavioral tests** at this revision, covering the original geometry/odometry/planner checks plus closed-loop route following, unequal motors, quantization, undetected slip, gyro drift, stall/abort/timing/timeout paths, route revalidation, numeric validation and Python 3.4-compatible syntax parsing.
+There are **38 local behavioral tests** at this revision, covering geometry/odometry/planning, route following, unequal motors, quantization, slip, gyro drift, stall/abort/timing/timeout paths, route revalidation, numeric validation, Python 3.4-compatible syntax, buffer reuse and collection at stopped transitions.
 
 The simulator prints the directory it creates. That directory includes one CSV trace per scenario and `report.json` with source checksums, model settings, course, state transitions and independent true/estimated results. Each run uses a new directory by default; an explicitly supplied `--output` must not already exist. Logs are ignored by Git.
 
-For an optional figure, with matplotlib installed on the laptop:
+## Garbage collection and buffer ownership
 
-```bash
-python3 project-01/scripts/plot_simulation.py project-01/logs/simulation-TIMESTAMP
-```
+The MicroPython 1.11 documentation includes `gc.collect()` and heap inspection through `gc.mem_free()`/`gc.mem_alloc()`. The actual Pybricks build still needs the new runtime inspection command run on it. No firmware change is required by this code.
 
-This writes `overview.png` and `overview.pdf`. The robot and core simulation have no matplotlib dependency. The plotting script was exercised locally with matplotlib 3.11.1.
+The controller allocates its sample, previous-sample, pose, speed, duty and result containers once. The output dictionary and its `pose` list are **borrowed mutable buffers**, reused on the next tick. A logger must write immediately or copy the individual values. Tests retain explicit snapshots where needed. Odometry and wheel-target calculations accept optional caller-owned output buffers while preserving convenient tuple returns for non-control callers.
+
+Automatic GC is never disabled. Explicit collection occurs after measured wheel speeds have stayed within the stopped tolerance at TURN-to-DRIVE and completed-waypoint transitions. Planning-only commands also collect after the grid search has returned. There is no forced collection on every drive or turn tick. Floating-point calculations, function return values and sysfs reads still allocate, so the change reduces container churn rather than promising zero allocation. Measure heap use and GC pauses on the real brick, and choose timing limits from those observations.
+
+References: [MicroPython 1.11 GC API](https://docs.micropython.org/en/v1.11/library/gc.html), [MicroPython allocation guidance](https://docs.micropython.org/en/v1.11/reference/speed_python.html).
 
 ## What remains when the robot returns
 
@@ -76,5 +80,5 @@ This writes `overview.png` and `overview.pdf`. The robot and core simulation hav
 2. Confirm connected ports, motor/gyro signs, actual geometry and gyro startup behavior. Calibration values remain unset.
 3. Implement and bench-test the independent stop/watchdog and hardware loop. Use monotonic elapsed time based on `ticks_diff`; account for counter wrap rather than treating `ticks_ms()/1000` as unbounded time.
 4. Tune wheel/heading controllers and verify straight travel, turns, stopping and fault behavior with the real robot. Set fault thresholds from measurements and expected sampling behavior.
-5. Enter the actual course and evaluate physical clearance and error. Investigate external position references if dead reckoning exceeds the available allowance; seam correction is still disabled.
+5. Enter the actual course and evaluate physical clearance and error. Calibrate and adjust the existing approach first; adding external position references is not a required assignment feature.
 6. Add location-gated color goal confirmation and repeat representative full-course runs. Controller completion alone is not proof that the physical robot reached the goal.

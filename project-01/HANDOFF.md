@@ -2,6 +2,14 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Current scope, style and memory decisions
+
+The user requested small functions with one responsibility, intermediate variables that document the math, and strict alignment with the assignment PDF. Navigation, planning, odometry, control, device reads and CLI dispatch have been refactored accordingly. Keep the task focused on the supplied map/start/goal, collision-free travel inside the workspace, and report/demo evidence. Do not introduce unknown-obstacle exploration, required seam localization or shortest-path optimization. The optional plotting script and unused seam-correction flag were removed.
+
+The simulated final-arrival check now uses the PDF's **0.305 m goal radius**, rather than the 0.015 m intermediate-waypoint tolerance. The gyro-drift example still has significant localization error but finishes inside that goal area; do not repeat the older claim that it necessarily fails arrival. Physical footprint clearance and estimator error are reported separately.
+
+**38 local tests pass.** The controller reuses its input/output and pose buffers. `Navigator.step()` returns a borrowed mutable dictionary whose `pose` list is also reused; log values immediately or copy a snapshot. Automatic garbage collection remains enabled; explicit `gc.collect()` is limited to measured stopped transitions and idle planning commands. MicroPython 1.11 documents GC support, but the actual EV3 build's heap API and pause durations have not been checked. The runtime command now checks these capabilities. No robot connection was used for this refactor. Earlier sections below are historical context where they mention 35 tests, optional plotting, or a failed drift-arrival scenario.
+
 ## Latest offline continuation
 
 The user subsequently requested development **without the robot connected**. Work continues on `nick-project-01-starter`; no robot/network access or deployment is part of this offline work. A handoff-only copy was separately pushed to `main` at `f9a29d4`; starter code remains on its branch.

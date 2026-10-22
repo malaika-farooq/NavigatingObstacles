@@ -4,6 +4,12 @@ New agent or teammate: start with [HANDOFF.md](HANDOFF.md) for project decisions
 
 Target: **Pybricks MicroPython 2.0.0 on ev3dev-stretch**, using only built-in modules and our own code. No `pybricks`, `ev3dev2`, robotics framework, NumPy, or external planner imports. The Linux hardware drivers provide raw device access; our adapter uses their sysfs files directly. We retain the existing firmware and SD-card setup.
 
+## Assignment scope and code style
+
+The task is to navigate from a supplied start to the supplied goal, avoid the known 0.305 m cardboard squares, and remain inside the workspace. Course data belongs in configuration; interactive map input, unknown-obstacle exploration, seam-based localization and shortest-path optimization are not required. The PDF gives a 0.305 m goal radius. The simulator checks arrival against that area, separately from the controller's smaller waypoint tolerance. Build choices, navigation code and test results support the required report and demonstration.
+
+Functions have one job: validate a sample, update odometry, advance a motion state, search the grid, or read a device. Use intermediate names with units, such as `left_distance_m`, `heading_error_rad` and `elapsed_s`, to explain calculations. Keep hardware writes separate from planning and calculation.
+
 ## Layout
 
 ```text
@@ -21,7 +27,6 @@ src/
   selftest.py     Small on-brick compatibility/logic check
 scripts/ev3.py    Laptop deployment, runtime checks, diagnostics, log retrieval
 scripts/simulate.py       Offline scenarios, CSV traces and JSON reports
-scripts/plot_simulation.py Optional laptop-only matplotlib plots
 tests/           Laptop behavioral tests (standard-library unittest)
 calibration/     Measured calibration records
 logs/            Downloaded trial data (ignored by Git)
@@ -44,7 +49,9 @@ python3 project-01/scripts/simulate.py
 
 The demo uses a synthetic course and illustrative dimensions. It does not use your actual robot measurements or execute a route. Real `plan` requires the actual configuration; it fails clearly when values are missing. The assignment PDF has conflicting overlaid workspace widths, so no width or sample goal is silently treated as authoritative.
 
-See [offline development](OFFLINE_DEVELOPMENT.md) for the sampled controller, simulation scenarios, fault tests, and interpretation of simulated completion versus actual target arrival. Simulation never imports hardware or changes calibration. CSV/JSON outputs go into ignored `logs/simulation-*` directories. Optional plotting uses matplotlib on the laptop only; it adds no robot dependency.
+See [offline development](OFFLINE_DEVELOPMENT.md) for the sampled controller, simulation scenarios, and interpretation of estimated completion versus actual arrival. Simulation is test support, never imports hardware, and does not change calibration. CSV/JSON outputs go into ignored `logs/simulation-*` directories. The optional plotting tool has been removed.
+
+MicroPython 1.11 provides the built-in `gc` module. The controller reuses sample, pose, wheel-command and result buffers, and explicitly collects after measured stops between segments. Automatic collection remains enabled. Numerical operations and device file reads can still allocate; this is not allocation-free or a hard real-time guarantee. `Navigator.step()` returns the same dictionary and pose list each time: read them immediately or copy values to retain history. The runtime inspection command checks the actual brick's GC API when reconnected. See [MicroPython 1.11 GC documentation](https://docs.micropython.org/en/v1.11/library/gc.html).
 
 ## Connect, deploy and inspect
 
@@ -84,6 +91,6 @@ Deployment copies a timestamped release, verifies source checksums on the brick,
 
 This is an **offline-tested controller and starter hardware structure**, not a tuned autonomous navigation implementation. `Navigator.step()` computes bounded duties from supplied samples and is exercised against a fictional model. It does not open devices, schedule a real-time loop, or independently stop physical motors. There is intentionally no command that executes physical motion. `MotionSession` remains the boundary for future hardware integration; the CLI cannot enable it. `CALIBRATED` remains false and physical dimensions remain unset.
 
-Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. BFS minimizes grid hops, not physical route length, and exact endpoint connectors can have arbitrary headings. Routes require physical validation. Seam correction stays disabled; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
+Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. BFS minimizes grid hops, not physical route length, and exact endpoint connectors can have arbitrary headings. Routes require physical validation. Seam correction is outside the current implementation; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
 
 References: [ev3dev motor interface](https://www.ev3dev.org/docs/tutorials/tacho-motors/), [sensor interface](https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/sensor_class.html), [Pybricks 2 CLI runtime](https://www.ev3dev.org/docs/programming-languages/).

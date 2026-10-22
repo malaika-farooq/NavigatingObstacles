@@ -3,6 +3,7 @@ import ast
 from pathlib import Path
 import sys
 import unittest
+from unittest import mock
 
 SRC = Path(__file__).resolve().parents[1] / "src"
 sys.path.insert(0, str(SRC))
@@ -57,8 +58,9 @@ class NavigationTests(unittest.TestCase):
 
     def test_gyro_drift_can_defeat_position_estimate(self):
         result = run_demo(gyro_drift_deg_s=0.1)
-        self.assertFalse(result["simulation_pass"])
+        self.assertTrue(result["simulation_pass"])
         self.assertGreater(result["peak_position_error_m"], 0.05)
+        self.assertLess(result["true_goal_error_m"], result["goal_radius_m"])
 
     def test_operator_abort_is_terminal(self):
         nav, robot = self.make_controller()
@@ -120,7 +122,7 @@ class NavigationTests(unittest.TestCase):
 
     def test_duty_limit_is_enforced_for_entire_route(self):
         outputs = []
-        run_demo(record=lambda robot, output: outputs.append(output))
+        run_demo(record=lambda robot, output: outputs.append(dict(output)))
         self.assertTrue(all(abs(o["left_duty"]) <= 25 and abs(o["right_duty"]) <= 25 for o in outputs))
         self.assertEqual((outputs[-1]["left_duty"], outputs[-1]["right_duty"]), (0, 0))
 
@@ -152,6 +154,34 @@ class NavigationTests(unittest.TestCase):
         for changes in ({"max_duty": 101}, {"wheel_kp": float("nan")}, {"max_gap_s": 0}):
             with self.assertRaises(ValueError):
                 self.make_controller(changes)
+
+    def test_result_and_pose_buffers_are_reused(self):
+        navigator, unused = self.make_controller()
+        first_result = navigator.step(0.02, 0, 0, 0)
+        first_pose_buffer = first_result["pose"]
+        saved_pose = tuple(first_pose_buffer)
+        second_result = navigator.step(0.04, -1, 1, 1)
+        self.assertIs(first_result, second_result)
+        self.assertIs(first_pose_buffer, second_result["pose"])
+        self.assertNotEqual(saved_pose[2], second_result["pose"][2])
+
+    def test_gc_runs_at_stopped_transition_not_each_tick(self):
+        navigator, unused = self.make_controller(route=[(0.4, 1), (0.8, 1)])
+        with mock.patch("navigation.gc.collect") as collect:
+            for sample_index in range(1, 21):
+                output = navigator.step(sample_index * 0.02, 0, 0, 0)
+            self.assertEqual(output["state"], "DRIVE")
+            self.assertEqual(collect.call_count, 1)
+
+    def test_gc_is_not_forced_while_turning(self):
+        navigator, robot = self.make_controller()
+        output = {"left_duty": 0, "right_duty": 0}
+        with mock.patch("navigation.gc.collect") as collect:
+            for sample_index in range(25):
+                robot.advance(output["left_duty"], output["right_duty"])
+                output = navigator.step(*robot.sample())
+            self.assertEqual(output["state"], "TURN")
+            collect.assert_not_called()
 
     def test_old_python_syntax_compatibility(self):
         for path in SRC.glob("*.py"):
