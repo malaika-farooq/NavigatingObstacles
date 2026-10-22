@@ -2,6 +2,16 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Latest offline continuation
+
+The user subsequently requested development **without the robot connected**. Work continues on `nick-project-01-starter`; no robot/network access or deployment is part of this offline work. A handoff-only copy was separately pushed to `main` at `f9a29d4`; starter code remains on its branch.
+
+Since the original handoff below, `navigation.py` adds a sampled turn/drive/settle controller with duty limits, route revalidation, stall/timing/timeout/abort handling. `simulation.py` and laptop scripts exercise it against a fictional plant and export CSV/JSON results and optional plots. **35 local tests pass.** Ideal, unequal-motor and one-degree-quantized scenarios pass; equal-wheel slip and gyro drift intentionally expose a mismatch between reported completion and simulated true arrival.
+
+Read [OFFLINE_DEVELOPMENT.md](OFFLINE_DEVELOPMENT.md) for implementation details, results and remaining work. Robot code still imports no external robotics libraries, calibration remains unset, the CLI has no physical-motion command, and an independent hardware watchdog/runner is still missing. New code has not been tested under the actual EV3 interpreter. The interrupted deployment described below remains interrupted; no later on-brick verification is implied by the offline test results. The following original handoff records the baseline before this continuation.
+
+**Latest port correction from the builder:** left motor **A**, right motor **B**, gyro sensor input **1**, color sensor input **4**. `src/config.py` now reflects these assignments. They supersede the earlier proposed sensor inputs 2/3 and wiring illustrations. No new device discovery occurred during offline development; confirm the sensors when reconnecting. The user briefly called the sensor ports C/D, then clarified the numbered inputs 1/4.
+
 ## Objective and user decisions
 
 Build and program a LEGO MINDSTORMS Education EV3 to navigate a known obstacle course. Continue from the existing starter; the next priority is hardware verification and repeatable motion, not more framework setup.
@@ -49,8 +59,8 @@ The user's robot has **two driven wheels at the rear and a caster at the front**
 | Left large motor | **Port A**, confirmed by user |
 | Right large motor | **Port B**, confirmed by user |
 | Motor forward signs | Unconfirmed; establish with wheels lifted |
-| Gyro input | `2` in config is proposed, not a detected assignment |
-| Color input | `3` in config is proposed, not a detected assignment |
+| Gyro input | **1**, subsequently confirmed by the builder; discovery pending |
+| Color input | **4**, subsequently confirmed by the builder; discovery pending |
 | Latest device inspection | Two large motors on A/B; sensors were still being connected and were not enumerated |
 | Wheel/track/footprint measurements | Not supplied; config values remain `None` |
 

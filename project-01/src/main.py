@@ -21,6 +21,10 @@ def main(args):
     elif command == "selftest":
         from selftest import run
         run()
+    elif command == "simulate-demo":
+        from simulation import run_demo
+        print("SYNTHETIC SIMULATION ONLY: fictional geometry/gains, no hardware")
+        print(run_demo())
     elif command in ("plan", "plan-demo"):
         from planner import demo_course, plan
         if command == "plan-demo":
@@ -45,7 +49,7 @@ def main(args):
             print("sample", i, snapshot())
             time.sleep(0.1)
     else:
-        raise ValueError("Commands: inspect, selftest, plan-demo, plan, monitor [samples]")
+        raise ValueError("Commands: inspect, selftest, simulate-demo, plan-demo, plan, monitor [samples]")
 
 
 if __name__ == "__main__":

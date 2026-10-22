@@ -1,5 +1,7 @@
 # EV3 build companion
 
+Current builder-confirmed wiring: **left motor A, right motor B, gyro input 1, color input 4**. The PDF/SVG diagrams retain earlier proposed wiring and conceptual layouts; use `../src/config.py` and the actual front-caster build for current assignments.
+
 Open [the printable, 12-page build plan](ev3-build-plan.pdf). Start with page 1 and keep the linked official LEGO manuals open for exact part, pin, hole, and axle placement. Read the [adversarial review](adversarial-review.md) for the design's unresolved risks and the reasons behind revision 2.
 
 The original vector diagrams are also available separately:

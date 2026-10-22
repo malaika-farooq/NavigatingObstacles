@@ -5,6 +5,8 @@ from odometry import Odometry
 from planner import CourseMap, demo_course, plan
 from control import WheelPI, heading_rate, wheel_targets
 from motion import next_segment
+from navigation import Navigator
+from simulation import demo_settings
 
 
 def run():
@@ -26,4 +28,9 @@ def run():
     assert heading_rate(1, 359, 1, 1) > 0
     assert WheelPI(1, 1, 20).update(100, 0, 0.02) == 20
     assert next_segment((0, 0, 0), (0, 1)) == (90, 1)
-    print("SELFTEST PASS: geometry, odometry, planner, control; no motor outputs")
+    nav = Navigator((0.056, 0.056, 0.12), (0.4, 1, 0), world, demo_settings())
+    nav.step(0, 0, 0, 0)
+    nav.start(path)
+    output = nav.step(0.02, 0, 0, 0, abort=True)
+    assert output["state"] == "ABORTED" and output["left_duty"] == output["right_duty"] == 0
+    print("SELFTEST PASS: geometry, odometry, planner, control, navigation abort; no motor outputs")

@@ -11,8 +11,8 @@ LEFT_MOTOR_PORT = "A"  # Confirmed by the builder.
 RIGHT_MOTOR_PORT = "B"
 LEFT_FORWARD_SIGN = None  # +1 or -1 after a raised-wheel direction test.
 RIGHT_FORWARD_SIGN = None
-GYRO_PORT = "2"          # Proposed input ports; confirm when connected.
-COLOR_PORT = "3"         # Optional; set None to omit.
+GYRO_PORT = "1"          # Confirmed by the builder; verify discovery on reconnection.
+COLOR_PORT = "4"         # Confirmed by the builder; optional, set None to omit.
 GYRO_CCW_SIGN = None     # +1 or -1: logical counterclockwise is positive.
 
 LEFT_WHEEL_DIAMETER_M = None

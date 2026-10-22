@@ -15,16 +15,20 @@ src/
   odometry.py     Encoder distance + gyro heading, with lens offsets
   planner.py      Own BFS, inflated obstacles, continuous edge checks
   motion.py       Output gate and waypoint-to-motion calculations
+  navigation.py   Sampled turn/drive/settle controller with fault handling
+  simulation.py   Fictional motor/robot model for offline development
   main.py         Nonmoving CLI commands
   selftest.py     Small on-brick compatibility/logic check
 scripts/ev3.py    Laptop deployment, runtime checks, diagnostics, log retrieval
+scripts/simulate.py       Offline scenarios, CSV traces and JSON reports
+scripts/plot_simulation.py Optional laptop-only matplotlib plots
 tests/           Laptop behavioral tests (standard-library unittest)
 calibration/     Measured calibration records
 logs/            Downloaded trial data (ignored by Git)
 build-plan/      Assembly companion and adversarial review
 ```
 
-Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. Forward motor signs and gyro sign still require physical tests. Gyro input 2 and color input 3 are proposed configuration values, not detected assignments. Ports can be changed in `src/config.py`.
+Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. The builder confirmed **gyro input 1 and color input 4**; device discovery must verify them on reconnection. Forward motor signs and gyro sign still require physical tests. Ports can be changed in `src/config.py`. Earlier build-guide wiring diagrams use suggested inputs 2/3; the confirmed 1/4 configuration takes precedence.
 
 ## Start locally
 
@@ -34,9 +38,13 @@ Run from the repository root; no virtual environment or pip packages are require
 python3 -m unittest discover -s project-01/tests -v
 python3 project-01/src/main.py selftest
 python3 project-01/src/main.py plan-demo
+python3 project-01/src/main.py simulate-demo
+python3 project-01/scripts/simulate.py
 ```
 
 The demo uses a synthetic course and illustrative dimensions. It does not use your actual robot measurements or execute a route. Real `plan` requires the actual configuration; it fails clearly when values are missing. The assignment PDF has conflicting overlaid workspace widths, so no width or sample goal is silently treated as authoritative.
+
+See [offline development](OFFLINE_DEVELOPMENT.md) for the sampled controller, simulation scenarios, fault tests, and interpretation of simulated completion versus actual target arrival. Simulation never imports hardware or changes calibration. CSV/JSON outputs go into ignored `logs/simulation-*` directories. Optional plotting uses matplotlib on the laptop only; it adds no robot dependency.
 
 ## Connect, deploy and inspect
 
@@ -74,7 +82,7 @@ Deployment copies a timestamped release, verifies source checksums on the brick,
 5. Build and test distance and absolute-heading primitives, then update odometry throughout motion. Treat pose as uncertain after a slip/stall; realign before restarting unless independent localization recovers it.
 6. Populate the actual course and test the planner. Integrate waypoint execution only after full-route clearance/error trials support it. Account for corrected paths and turning envelopes.
 
-This is a tested **starter structure**, not a tuned autonomous navigation implementation. There is intentionally no command that executes motion. `MotionSession` is an integration boundary for future explicit controller code; the CLI cannot enable it. `CALIBRATED` remains false and physical dimensions remain unset.
+This is an **offline-tested controller and starter hardware structure**, not a tuned autonomous navigation implementation. `Navigator.step()` computes bounded duties from supplied samples and is exercised against a fictional model. It does not open devices, schedule a real-time loop, or independently stop physical motors. There is intentionally no command that executes physical motion. `MotionSession` remains the boundary for future hardware integration; the CLI cannot enable it. `CALIBRATED` remains false and physical dimensions remain unset.
 
 Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. BFS minimizes grid hops, not physical route length, and exact endpoint connectors can have arbitrary headings. Routes require physical validation. Seam correction stays disabled; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
 

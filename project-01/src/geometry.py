@@ -2,6 +2,10 @@
 import math
 
 
+def finite(value):
+    return isinstance(value, (int, float)) and value == value and abs(value) != float("inf")
+
+
 def wrap_degrees(angle):
     return (angle + 180.0) % 360.0 - 180.0
 
