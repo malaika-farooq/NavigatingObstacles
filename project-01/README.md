@@ -1,5 +1,7 @@
 # Project 01: EV3 navigation
 
+New agent or teammate: start with [HANDOFF.md](HANDOFF.md) for project decisions, verified hardware/runtime facts, the interrupted deployment status, and ordered next steps.
+
 Target: **Pybricks MicroPython 2.0.0 on ev3dev-stretch**, using only built-in modules and our own code. No `pybricks`, `ev3dev2`, robotics framework, NumPy, or external planner imports. The Linux hardware drivers provide raw device access; our adapter uses their sysfs files directly. We retain the existing firmware and SD-card setup.
 
 ## Layout
