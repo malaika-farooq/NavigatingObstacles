@@ -33,7 +33,7 @@ logs/            Downloaded trial data (ignored by Git)
 build-plan/      Assembly companion and adversarial review
 ```
 
-Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. The builder confirmed **gyro input 1 and color input 4**; device discovery must verify them on reconnection. Forward motor signs and gyro sign still require physical tests. Ports can be changed in `src/config.py`. Earlier build-guide wiring diagrams use suggested inputs 2/3; the confirmed 1/4 configuration takes precedence.
+Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. The builder confirmed **gyro input 1 and color input 4**, and both sensors were discovered on the brick during the [initial sensor check](calibration/sensor-check-2026-10-22.md). Forward motor signs and gyro sign still require physical tests. Ports can be changed in `src/config.py`. Earlier build-guide wiring diagrams use suggested inputs 2/3; the confirmed 1/4 configuration takes precedence.
 
 ## Start locally
 

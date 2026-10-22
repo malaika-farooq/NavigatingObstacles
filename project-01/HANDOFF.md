@@ -2,6 +2,10 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Latest connected sensor results
+
+Both sensors are now discovered on the actual brick: gyro **input 1**, color **input 4**. A stationary 101-sample check over 11.73 seconds showed no observable gyro angle change (-48 degrees throughout); motor encoder positions were unchanged. Color reflection was 5% with the lens more than 1 cm above a white table, then **83–85%** when the user placed white paper close beneath it. Mounting height and black/floor contrast still need calibration; gyro direction and known-angle response have not been checked. Built-in `gc.collect()` and `gc.mem_free()` also work on this actual Pybricks 2 build, reporting approximately 8.18 MB free heap in the diagnostic. See [sensor-check record](calibration/sensor-check-2026-10-22.md). These direct diagnostics did not activate the earlier deployment, run the full controller, or issue motor commands. They supersede older statements below that sensors and the GC API had not yet been verified.
+
 ## Current scope, style and memory decisions
 
 The user requested small functions with one responsibility, intermediate variables that document the math, and strict alignment with the assignment PDF. Navigation, planning, odometry, control, device reads and CLI dispatch have been refactored accordingly. Keep the task focused on the supplied map/start/goal, collision-free travel inside the workspace, and report/demo evidence. Do not introduce unknown-obstacle exploration, required seam localization or shortest-path optimization. The optional plotting script and unused seam-correction flag were removed.
