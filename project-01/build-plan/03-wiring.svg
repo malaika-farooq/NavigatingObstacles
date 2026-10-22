@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="595.44pt" height="841.68pt" viewBox="0 0 595.44 841.68" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-22T17:04:20.861332</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 841.68
+L 595.44 841.68
+L 595.44 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 236.90862 364.86828
+L 358.53138 364.86828
+L 358.53138 207.47412
+L 236.90862 207.47412
+z
+" clip-path="url(#pf3dff7d3af)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 118.863 243.24552
+L 201.13722 243.24552
+L 201.13722 182.43414
+L 118.863 182.43414
+z
+" clip-path="url(#pf3dff7d3af)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 394.30278 243.24552
+L 476.577 243.24552
+L 476.577 182.43414
+L 394.30278 182.43414
+z
+" clip-path="url(#pf3dff7d3af)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 118.863 386.33112
+L 201.13722 386.33112
+L 201.13722 325.51974
+L 118.863 325.51974
+z
+" clip-path="url(#pf3dff7d3af)" style="fill: #cbe9dd; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 394.30278 386.33112
+L 476.577 386.33112
+L 476.577 325.51974
+L 394.30278 325.51974
+z
+" clip-path="url(#pf3dff7d3af)" style="fill: #ffe1c9; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 201.13722 214.6284
+L 236.90862 232.5141
+" clip-path="url(#pf3dff7d3af)" style="fill: none; stroke: #167d86; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 358.53138 232.5141
+L 394.30278 214.6284
+" clip-path="url(#pf3dff7d3af)" style="fill: none; stroke: #167d86; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 201.13722 357.714
+L 236.90862 339.8283
+" clip-path="url(#pf3dff7d3af)" style="fill: none; stroke: #167d86; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 358.53138 339.8283
+L 394.30278 357.714
+" clip-path="url(#pf3dff7d3af)" style="fill: none; stroke: #167d86; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(276.468047 272.306805)">EV3 brick</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(297.72 283.108563)"/>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(267.025781 293.910321)">OUTPUTS A-D</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(272.633906 304.712079)">INPUTS 1-4</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(136.598704 209.777193)">Left motor</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(156.912688 220.578951)">B</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(408.655749 209.777193)">Right motor</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(432.297624 220.578951)">C</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(149.345657 352.862442)">Gyro</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(157.136985 363.6642)">2</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(400.511453 352.862793)">Color (optional)</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(432.576765 363.664551)">3</text>
+   </g>
+  </g>
+  <g id="text_6">
+   <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="40.40064" transform="rotate(-0 44.658 40.40064)">PROJECT 01 / EV3 NAVIGATION</text>
+  </g>
+  <g id="text_7">
+   <text style="font-weight: 700; font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24598a" x="44.658" y="72.38448" transform="rotate(-0 44.658 72.38448)">05 / Wiring and sign conventions</text>
+  </g>
+  <g id="text_8">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="44.658" y="98.47656" transform="rotate(-0 44.658 98.47656)">Recommended project ports / these are choices, not mandatory LEGO assignments.</text>
+  </g>
+  <g id="text_9">
+   <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="44.658" y="812.2212" transform="rotate(-0 44.658 812.2212)">Build companion v2 / 22 Oct 2026 / physical assembly not yet validated</text>
+  </g>
+  <g id="text_10">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="550.782" y="812.2212" transform="rotate(-0 550.782 812.2212)">7</text>
+  </g>
+  <g id="text_11">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="458.7156" transform="rotate(-0 44.658 458.7156)">Connection map</text>
+  </g>
+  <g id="text_12">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="480.59928" transform="rotate(-0 44.658 480.59928)">B = left large motor; C = right large motor; 2 = gyro; 3 = optional color sensor. Left and</text>
+  </g>
+  <g id="text_13">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="495.32868" transform="rotate(-0 44.658 495.32868)">right mean as seen from behind the robot, looking forward. If your official assembly is</text>
+  </g>
+  <g id="text_14">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="510.05808" transform="rotate(-0 44.658 510.05808)">already cabled differently, either move the cables or change the project configuration; the</text>
+  </g>
+  <g id="text_15">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="524.78748" transform="rotate(-0 44.658 524.78748)">two must agree. Leave unused ports empty initially.</text>
+  </g>
+  <g id="text_16">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="552.98376" transform="rotate(-0 44.658 552.98376)">Bench test with wheels safely clear of the floor</text>
+  </g>
+  <g id="text_17">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="574.86744" transform="rotate(-0 44.658 574.86744)">1. Command only B at low speed briefly; verify it is the left wheel. Stop it.</text>
+  </g>
+  <g id="text_18">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="594.64692" transform="rotate(-0 44.658 594.64692)">2. Command only C; verify it is the right wheel. Stop it.</text>
+  </g>
+  <g id="text_19">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="614.4264" transform="rotate(-0 44.658 614.4264)">3. Define positive logical speed as forward ground travel on both wheels. Mirrored motors</text>
+  </g>
+  <g id="text_20">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="629.1558" transform="rotate(-0 44.658 629.1558)">may need opposite raw signs. Make the encoder signs match that convention too.</text>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="648.93528" transform="rotate(-0 44.658 648.93528)">4. Confirm counterclockwise physical rotation produces positive logical gyro heading.</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="668.71476" transform="rotate(-0 44.658 668.71476)">5. Verify the stop function and a reachable brick-button abort before floor tests.</text>
+  </g>
+  <g id="text_23">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="696.91104" transform="rotate(-0 44.658 696.91104)">Programming boundary</text>
+  </g>
+  <g id="text_24">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="718.79472" transform="rotate(-0 44.658 718.79472)">Use the motor/sensor API permitted by the instructor. LEGO EV3 MicroPython uses Pybricks,</text>
+  </g>
+  <g id="text_25">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="733.52412" transform="rotate(-0 44.658 733.52412)">so a blanket library ban needs clarification before choosing imports. This build does not</text>
+  </g>
+  <g id="text_26">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="748.25352" transform="rotate(-0 44.658 748.25352)">require a prebuilt DriveBase, navigation library, or sensor-fusion package. Keep raw access</text>
+  </g>
+  <g id="text_27">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="762.98292" transform="rotate(-0 44.658 762.98292)">and sign conversion in one hardware adapter.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf3dff7d3af">
+   <rect x="118.863" y="143.0856" width="357.714" height="286.1712"/>
+  </clipPath>
+ </defs>
+</svg>
