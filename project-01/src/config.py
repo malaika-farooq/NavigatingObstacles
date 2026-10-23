@@ -29,14 +29,15 @@ COLOR_BLACK_REFLECTION_PERCENT = 1
 # User accepted this calibration: reflection <= 29% is black.
 COLOR_BLACK_THRESHOLD_PERCENT = 29
 
-# Fill with the actual assigned course. PDF has conflicting workspace widths.
-WORKSPACE_M = None       # (width, height), origin at lower-left.
-START_POSE = None        # (x_m, y_m, counterclockwise_heading_degrees).
-GOAL_M = None            # (x_m, y_m).
-OBSTACLES_M = []         # Centers of axis-aligned cardboard squares.
+# Course values live in course.py, in the PDF's header-file format.
+import course as _course
+WORKSPACE_M = _course.workspace_m()  # (width, height), origin at lower-left.
+START_POSE = (_course.start[0], _course.start[1], _course.start_heading_deg)
+GOAL_M = _course.goal
+OBSTACLES_M = _course.obstacle_centers_m()  # Centers of axis-aligned squares.
 OBSTACLE_SIDE_M = 0.305
 GOAL_RADIUS_M = 0.305
-GRID_SPACING_M = 0.1525
+GRID_SPACING_M = 0.1525   # Half a tile: lands on tile centers and corners.
 
 # These bound future tuning experiments, not a calibrated motion controller.
 CONTROL_PERIOD_MS = 20

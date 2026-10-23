@@ -49,6 +49,49 @@ class PlannerTests(unittest.TestCase):
         course["obstacles"] = []
         self.assertEqual(plan(course, 0.15, 0.03, 0.1), [course["start"], course["goal"]])
 
+    def test_pdf_course_input_matches_header(self):
+        import course
+        self.assertEqual(len(course.obstacle_centers_m()), 13)
+        self.assertAlmostEqual(course.workspace_m()[0], 4.88)
+        self.assertEqual(config.course()["goal"], (3.658, 1.829))
+
+    def test_pdf_course_plans_with_footprint_clearance(self):
+        for radius_m in (0.10, 0.13, 0.16):
+            path = plan(config.course(), radius_m, 0.05, config.GRID_SPACING_M)
+            world = CourseMap(config.course(), radius_m, 0.05)
+            self.assertEqual(path[0], config.course()["start"])
+            self.assertEqual(path[-1], config.course()["goal"])
+            self.assertTrue(all(world.segment_clear(a, b) for a, b in zip(path, path[1:])))
+
+    def test_wavefront_is_zero_at_goal_and_decreases_by_one(self):
+        from planner import CourseMap as Map, _build_grid, wavefront
+        world = Map(config.course(), 0.13, 0.05)
+        nodes = _build_grid(world, 0.1525, 10000)
+        goal_cell = (24, 12)
+        potential = wavefront(world, nodes, goal_cell)
+        self.assertEqual(potential[goal_cell], 0)
+        for cell, value in potential.items():
+            if value > 0:
+                lower = [potential.get((cell[0] + dx, cell[1] + dy))
+                         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+                self.assertIn(value - 1, lower)
+
+    def test_route_segments_are_axis_aligned_between_grid_cells(self):
+        path = plan(config.course(), 0.13, 0.05, 0.1525)
+        inner = path[1:-1]
+        for a, b in zip(inner, inner[1:]):
+            self.assertTrue(abs(a[0] - b[0]) < 1e-9 or abs(a[1] - b[1]) < 1e-9)
+
+    def test_padding_inside_count_is_rejected(self):
+        import course
+        saved_count = course.num_obstacles
+        course.num_obstacles = 14
+        try:
+            with self.assertRaises(ValueError):
+                course.obstacle_centers_m()
+        finally:
+            course.num_obstacles = saved_count
+
     def test_simplification_keeps_reversal(self):
         self.assertEqual(simplify([(0, 0), (1, 0), (0, 0)]), [(0, 0), (1, 0), (0, 0)])
 

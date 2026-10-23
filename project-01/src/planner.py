@@ -1,9 +1,11 @@
-"""Plan around known cardboard squares using our own four-neighbor BFS.
+"""Plan with the Manhattan-distance navigation function (wavefront) from lecture.
+
+Goal cell = 0, neighbors +1; the robot descends the potential to the goal.
 
 The circular robot envelope is approximated conservatively at obstacle corners.
 A failed grid search is not proof that the physical course has no route.
 """
-from geometry import segment_hits_box
+from geometry import INFINITY, distance, segment_hits_box
 
 
 class CourseMap:
@@ -88,51 +90,78 @@ def _build_grid(world, spacing_m, max_nodes):
     return nodes
 
 
-def _connect_endpoints(world, nodes, start, goal):
-    parents = {}
-    queue = []
-    goal_connections = set()
-    for index, position_m in nodes.items():
-        if world.segment_clear(start, position_m):
-            parents[index] = None
-            queue.append(index)
-        if world.segment_clear(position_m, goal):
-            goal_connections.add(index)
-    return parents, queue, goal_connections
+# Four Manhattan neighbors, listed so index i and (i + 2) % 4 are opposites.
+STEPS = ((1, 0), (0, 1), (-1, 0), (0, -1))
+UNREACHED = -1
 
 
-def _neighbors(index):
-    column, row = index
-    return ((column - 1, row), (column + 1, row), (column, row - 1), (column, row + 1))
+def _nearest_cell(nodes, world, point, spacing_m):
+    """Grid cell closest to an exact point, reachable by a clear straight line."""
+    column = int(round(point[0] / spacing_m))
+    row = int(round(point[1] / spacing_m))
+    index = (column, row)
+    if index in nodes and world.segment_clear(point, nodes[index]):
+        return index
+    best_index = None
+    best_distance_m = INFINITY
+    for candidate_index, position_m in nodes.items():
+        candidate_distance_m = distance(point, position_m)
+        if candidate_distance_m < best_distance_m and world.segment_clear(point, position_m):
+            best_index = candidate_index
+            best_distance_m = candidate_distance_m
+    if best_index is None:
+        raise ValueError("Start or goal cannot reach a free grid cell")
+    return best_index
 
 
-def _search_grid(world, nodes, parents, queue, goal_connections):
-    queue_position = 0
-    while queue_position < len(queue):
-        current_index = queue[queue_position]
-        queue_position += 1
-        if current_index in goal_connections:
-            return current_index
-        for neighbor_index in _neighbors(current_index):
-            unvisited_node = neighbor_index in nodes and neighbor_index not in parents
-            if not unvisited_node:
+def wavefront(world, nodes, goal_index):
+    """Manhattan-distance navigation function: goal cell is 0, each step adds 1.
+
+    Obstacle cells are absent from nodes (already grown by robot radius + error),
+    so they keep the UNREACHED value and act as infinite potential.
+    """
+    potential = {goal_index: 0}
+    frontier = [goal_index]
+    frontier_position = 0
+    while frontier_position < len(frontier):
+        cell = frontier[frontier_position]
+        frontier_position += 1
+        for step_x, step_y in STEPS:
+            neighbor = (cell[0] + step_x, cell[1] + step_y)
+            if neighbor not in nodes or neighbor in potential:
                 continue
-            current_position = nodes[current_index]
-            neighbor_position = nodes[neighbor_index]
-            if world.segment_clear(current_position, neighbor_position):
-                parents[neighbor_index] = current_index
-                queue.append(neighbor_index)
-    raise ValueError("No route in this grid/clearance model; refine or inspect course")
+            if not world.segment_clear(nodes[cell], nodes[neighbor]):
+                continue
+            potential[neighbor] = potential[cell] + 1
+            frontier.append(neighbor)
+    return potential
 
 
-def _reconstruct_path(nodes, parents, final_index, start, goal):
-    reversed_points = []
-    current_index = final_index
-    while current_index is not None:
-        reversed_points.append(nodes[current_index])
-        current_index = parents[current_index]
-    reversed_points.reverse()
-    return simplify([start] + reversed_points + [goal])
+def descend(world, nodes, potential, start_index):
+    """Follow the gradient to the goal; keep the current direction on ties (fewer turns)."""
+    if start_index not in potential:
+        raise ValueError("No route in this grid/clearance model; refine or inspect course")
+    cells = [start_index]
+    cell = start_index
+    direction = None
+    while potential[cell] > 0:
+        target_value = potential[cell] - 1
+        choices = []
+        for step_index in range(4):
+            step_x, step_y = STEPS[step_index]
+            neighbor = (cell[0] + step_x, cell[1] + step_y)
+            if potential.get(neighbor, UNREACHED) != target_value:
+                continue
+            if not world.segment_clear(nodes[cell], nodes[neighbor]):
+                continue
+            choices.append(step_index)
+        if not choices:
+            raise ValueError("Navigation function has no downhill neighbor")
+        direction = direction if direction in choices else choices[0]
+        step_x, step_y = STEPS[direction]
+        cell = (cell[0] + step_x, cell[1] + step_y)
+        cells.append(cell)
+    return cells
 
 
 def _validate_path(world, path):
@@ -144,6 +173,14 @@ def _validate_path(world, path):
 
 
 def plan(course, radius_m, error_m, spacing_m, max_nodes=10000):
+    """Waypoints from start to goal using the Manhattan-distance navigation function.
+
+    1. Configuration space: grow each square and the walls by radius_m + error_m.
+    2. Regular grid: cells every spacing_m; cells inside grown obstacles are removed.
+    3. Wavefront: label the goal cell 0 and spread +1 to 4-neighbors.
+    4. Descend from the start cell, preferring to keep the current heading.
+    5. Merge straight runs into single drive segments.
+    """
     if spacing_m <= 0:
         raise ValueError("Grid spacing must be positive")
     world = CourseMap(course, radius_m, error_m)
@@ -151,14 +188,34 @@ def plan(course, radius_m, error_m, spacing_m, max_nodes=10000):
     goal = tuple(course["goal"])
     if not world.point_clear(start) or not world.point_clear(goal):
         raise ValueError("Start/goal violates the configured clearance model")
-    if world.segment_clear(start, goal):
-        return [start] if start == goal else [start, goal]
+    if start == goal:
+        return [start]
     nodes = _build_grid(world, spacing_m, max_nodes)
-    parents, queue, goal_connections = _connect_endpoints(world, nodes, start, goal)
-    final_index = _search_grid(world, nodes, parents, queue, goal_connections)
-    path = _reconstruct_path(nodes, parents, final_index, start, goal)
+    start_index = _nearest_cell(nodes, world, start, spacing_m)
+    goal_index = _nearest_cell(nodes, world, goal, spacing_m)
+    potential = wavefront(world, nodes, goal_index)
+    cells = descend(world, nodes, potential, start_index)
+    grid_points = [nodes[cell] for cell in cells]
+    path = _without_repeats([start] + grid_points + [goal])
+    path = simplify(path)
     _validate_path(world, path)
     return path
+
+
+SAME_POINT_M = 0.01  # PDF coordinates are rounded (1.219 vs 8 x 0.1525 = 1.220).
+
+
+def _without_repeats(points):
+    """Drop grid points within 1 cm of a neighbor, always keeping exact start and goal."""
+    goal = points[-1]
+    result = [points[0]]
+    for point in points[1:-1]:
+        near_previous = distance(point, result[-1]) <= SAME_POINT_M
+        near_goal = distance(point, goal) <= SAME_POINT_M
+        if not near_previous and not near_goal:
+            result.append(point)
+    result.append(goal)
+    return result
 
 
 def demo_course():
