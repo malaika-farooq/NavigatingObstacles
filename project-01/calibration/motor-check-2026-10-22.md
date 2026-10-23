@@ -26,3 +26,14 @@ The user requested sustained slow motion to inspect the drivetrain. Motor A ran 
 Motor B was then tested alone at +90 counts/s with a five-second kernel time limit. Streamed samples at 1.050/2.115/3.181/4.245 seconds reported encoder positions 91/187/284/380, speeds 91/96/91/93 counts/s and gyro angles -446/-427/-406/-387°. The diagnostic finished with both motor states empty. The user likewise observed the right wheel driving backward, away from the caster.
 
 These observations supersede the pending-direction status above: **LEFT_FORWARD_SIGN = -1 and RIGHT_FORWARD_SIGN = -1** are now saved in `src/config.py`. Gyro CCW sign, dimensions and overall calibration remain unset. These tests establish wheel direction, not measured travel distance or turn accuracy. No further movement was started after the right-wheel check.
+
+## Both-wheel forward checks
+
+The user then authorized continuation, followed by a request for a five-second run. Both motors received -90 counts/s targets with individual kernel time limits and explicit final stop commands. The already-submitted two-second run completed first; a separate five-second run followed after it stopped. The gyro stayed in `GYRO-ANG`; neither diagnostic reset encoders or gyro.
+
+| Timed run | A encoder start/end | B encoder start/end | Raw gyro start/end | Final motor speeds |
+| --- | --- | --- | --- | --- |
+| 2 seconds | 0 / -161 | 0 / -178 | -371° / -374° | Both 0 |
+| 5 seconds | 0 / -444 | 0 / -454 | -374° / -375° | Both 0 |
+
+Both runs finished with empty motor states and no observed stall/overload flags during polling. The five-second run produced approximately 1.23 and 1.26 motor revolutions, with a net raw gyro change of -1°. This is a short forward-response check, not a measured straightness or distance calibration: no floor distance, lateral deviation, full heading history, or wheel slip was measured. User observation of chassis motion is still pending. Gyro sign remains unset and `CALIBRATED` remains false.

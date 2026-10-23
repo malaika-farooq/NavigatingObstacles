@@ -4,6 +4,8 @@ Updated: October 22, 2026. Read this before operating the robot or changing the 
 
 ## Latest motor check
 
+After direction confirmation, both wheels were tested together at raw -90 counts/s, first for two seconds and then for five seconds as requested. The five-second run recorded encoder changes A -444 / B -454 counts, raw gyro -374° to -375°, and both final speeds zero. User observation and measured floor distance remain pending; this is not complete straight-line calibration. No further motion should start automatically on reading this handoff.
+
 The user subsequently placed the robot on the floor and authorized motor tests. Both motors responded to short positive/negative kernel-timed speed pulses. Longer observed tests established that positive raw commands drive **both wheels backward, away from the front caster**. `LEFT_FORWARD_SIGN` and `RIGHT_FORWARD_SIGN` are now **-1** in `src/config.py`. Both motors were stopped after testing. See [motor-check record](calibration/motor-check-2026-10-22.md). Gyro CCW sign and geometry remain unconfirmed. These diagnostics supersede historical statements below that no motor commands have been issued or motor directions are unknown, but do not validate the navigation controller or finish the interrupted deployment. Overall `CALIBRATED` remains false.
 
 ## Latest connected sensor results
