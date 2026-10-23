@@ -68,7 +68,7 @@ class PlannerTests(unittest.TestCase):
         world = Map(config.course(), 0.13, 0.05)
         nodes = _build_grid(world, 0.1525, 10000)
         goal_cell = (24, 12)
-        potential = wavefront(world, nodes, goal_cell)
+        potential = wavefront(world, nodes, [goal_cell])
         self.assertEqual(potential[goal_cell], 0)
         for cell, value in potential.items():
             if value > 0:
@@ -91,6 +91,41 @@ class PlannerTests(unittest.TestCase):
                 course.obstacle_centers_m()
         finally:
             course.num_obstacles = saved_count
+
+    def test_endpoint_connectors_bypass_an_isolated_nearest_cell(self):
+        course = {"workspace": (1.5, 1.5), "start": (1.091, 0.743),
+                  "goal": (0.320, 1.243), "obstacles": [(0.291, 0.915), (0.631, 1.297)],
+                  "obstacle_side": 0.18, "goal_radius": 0.1}
+        # Exercise both an isolated goal cell and the reversed start case.
+        for start, goal in ((course["start"], course["goal"]),
+                            (course["goal"], course["start"])):
+            course["start"], course["goal"] = start, goal
+            path = plan(course, 0.06, 0.01, 0.15)
+            world = CourseMap(course, 0.06, 0.01)
+            self.assertEqual(path[0], start)
+            self.assertEqual(path[-1], goal)
+            self.assertTrue(all(world.segment_clear(a, b) for a, b in zip(path, path[1:])))
+
+    def test_nearby_corner_is_preserved_to_avoid_cutting_obstacle(self):
+        from planner import _without_repeats
+        course = {"workspace": (1.0, 1.0), "obstacles": [(0.5, 0.5)],
+                  "obstacle_side": 0.18}
+        world = CourseMap(course, 0.01, 0.0)
+        points = [(0.399, 0.401), (0.399, 0.399), (0.401, 0.399)]
+        self.assertFalse(world.segment_clear(points[0], points[-1]))
+        path = simplify(_without_repeats(points))
+        self.assertTrue(all(world.segment_clear(a, b) for a, b in zip(path, path[1:])))
+
+    def test_heading_is_optional_for_planning_but_required_for_motion(self):
+        from unittest import mock
+        # Supply the other calibration values to isolate the heading gate.
+        with mock.patch.multiple(config, WHEEL_TRACK_M=0.12, FOOTPRINT_RADIUS_M=0.13,
+                                 CALIBRATED=True, START_POSE=(0.305, 1.219, None)):
+            self.assertTrue(plan(config.course(), 0.13, 0.05, 0.1525))
+            with self.assertRaisesRegex(ValueError, "start_heading_deg"):
+                config.require_motion_calibration()
+            config.START_POSE = (0.305, 1.219, 90.0)
+            config.require_motion_calibration()
 
     def test_simplification_keeps_reversal(self):
         self.assertEqual(simplify([(0, 0), (1, 0), (0, 0)]), [(0, 0), (1, 0), (0, 0)])

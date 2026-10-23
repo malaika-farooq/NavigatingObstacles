@@ -1,4 +1,4 @@
-"""Assigned course input, written in the same form as the assignment PDF header.
+"""Course input, written in the same form as the assignment PDF header.
 
 Replace these values with the course handed out for the demonstration. Units are
 meters; the origin is the lower-left workspace corner, X along the 16-tile side.
@@ -24,7 +24,7 @@ obstacle = [
 start = (0.305, 1.219)
 # Not given by the PDF: the direction the robot faces when placed at start.
 # 0 = facing +X (toward the long side), counterclockwise positive.
-start_heading_deg = 0.0
+start_heading_deg = None  # Confirm placement before any physical navigation.
 
 goal = (3.658, 1.829)
 

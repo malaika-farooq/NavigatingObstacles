@@ -15,6 +15,7 @@ Functions have one job: validate a sample, update odometry, advance a motion sta
 ```text
 src/
   config.py       Actual ports, measured geometry, calibration, course
+  course.py       Editable PDF-format map and unconfirmed starting heading
   hardware.py     Own motor/sensor sysfs adapter and read-only discovery
   geometry.py     Collision and angle helpers
   control.py      Own heading P, wheel PI, differential-drive calculations
@@ -42,12 +43,13 @@ Run from the repository root; no virtual environment or pip packages are require
 ```bash
 python3 -m unittest discover -s project-01/tests -v
 python3 project-01/src/main.py selftest
+python3 project-01/src/main.py plan-course 0.13 0.05
 python3 project-01/src/main.py plan-demo
 python3 project-01/src/main.py simulate-demo
 python3 project-01/scripts/simulate.py
 ```
 
-The demo uses a synthetic course and illustrative dimensions. It does not use your actual robot measurements or execute a route. Real `plan` requires the actual configuration; it fails clearly when values are missing. The assignment PDF has conflicting overlaid workspace widths, so no width or sample goal is silently treated as authoritative.
+The demo uses a synthetic course and illustrative dimensions. It does not use your actual robot measurements or execute a route. Real `plan` requires the actual configuration; it fails clearly when values are missing. The working workspace is the PDF's 16 × 10 tiles (4.88 × 3.05 m), as requested. `src/course.py` contains the PDF example's 13 obstacles, start and goal; replace those inputs when the run's map is supplied. `plan-course` previews that map using explicitly assumed radius/error values. Starting heading remains `None` until placement is confirmed; planning only needs position, while the motion gate requires a finite heading. The planner accepts any supplied map within the assignment's square-obstacle model.
 
 See [offline development](OFFLINE_DEVELOPMENT.md) for the sampled controller, simulation scenarios, and interpretation of estimated completion versus actual arrival. Simulation is test support, never imports hardware, and does not change calibration. CSV/JSON outputs go into ignored `logs/simulation-*` directories. The optional plotting tool has been removed.
 
@@ -95,6 +97,6 @@ Follow [CURRENT_PLAN.md](CURRENT_PLAN.md) for current status; the milestones bel
 
 This is an **offline-tested controller and starter hardware structure**, not a tuned autonomous navigation implementation. `Navigator.step()` computes bounded duties from supplied samples and is exercised against a fictional model. It does not open devices, schedule a real-time loop, or independently stop physical motors. There is intentionally no command that executes physical motion. `MotionSession` remains the boundary for future hardware integration; the CLI cannot enable it. `CALIBRATED` remains false; wheel diameters use the nominal kit size, while track, footprint and other required geometry remain unset.
 
-Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. BFS minimizes grid hops, not physical route length, and exact endpoint connectors can have arbitrary headings. Routes require physical validation. Seam correction is outside the current implementation; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
+Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. The wavefront minimizes grid hops to a goal connector, not total physical route length. Every grid cell visible from each exact endpoint is considered, so an isolated nearest cell does not hide a usable connector. Endpoint connectors can have arbitrary headings. Only identical consecutive waypoints are removed; small necessary corners are retained. Routes require physical validation. Seam correction is outside the current implementation; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
 
 References: [ev3dev motor interface](https://www.ev3dev.org/docs/tutorials/tacho-motors/), [sensor interface](https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/sensor_class.html), [Pybricks 2 CLI runtime](https://www.ev3dev.org/docs/programming-languages/).
