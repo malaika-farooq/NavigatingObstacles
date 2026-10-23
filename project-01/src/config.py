@@ -9,8 +9,8 @@ CALIBRATED = False
 
 LEFT_MOTOR_PORT = "A"  # Confirmed by the builder.
 RIGHT_MOTOR_PORT = "B"
-LEFT_FORWARD_SIGN = None  # +1 or -1 after a raised-wheel direction test.
-RIGHT_FORWARD_SIGN = None
+LEFT_FORWARD_SIGN = -1   # Positive raw A drove backward in observed floor test.
+RIGHT_FORWARD_SIGN = -1  # Positive raw B also drove away from the front caster.
 GYRO_PORT = "1"          # Confirmed by the builder; verify discovery on reconnection.
 COLOR_PORT = "4"         # Confirmed by the builder; optional, set None to omit.
 GYRO_CCW_SIGN = None     # +1 or -1: logical counterclockwise is positive.
