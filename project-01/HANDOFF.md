@@ -4,6 +4,10 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Latest deployment
+
+Revision `9905043` is deployed as `20261023T003617Z-1ed71111ecea`; all source checksums verified. On-brick self-test, device inspection, color check, and PDF-map preview passed with no motor or sensor-mode commands. Both motor encoders/speeds remained zero during 20 monitored samples; gyro input 1 stayed −639°, color input 4 read 59–60%. Runtime is Pybricks MicroPython 2.0.0 and GC is enabled. See [deployment record](calibration/deployment-check-2026-10-22.md). This supersedes historical interrupted-deployment statements below; physical motion calibration and the independent watchdog remain incomplete.
+
 ## Current plan and accepted calibration
 
 Read [CURRENT_PLAN.md](CURRENT_PLAN.md) first for completed checks and ordered remaining work. The user accepted white tabletop 57% and black bubble wrap 1% after remounting: **black threshold 29%, inclusive**. The configured color references and threshold are implemented through the hardware classifier and nonmoving `color-check` CLI. Nominal kit wheel diameters are now 0.056 m, sourced from LEGO's 56 x 28 mm tire listing; they are not measured effective rolling diameters. Both forward signs and gyro CCW sign are -1. Wheel spacing is deferred, other motion geometry remains incomplete, and `CALIBRATED` remains false. The starter work was merged to main at a143094; new updates do not imply on-brick deployment. Historical pending-threshold, unknown-sign, unset-diameter and branch-only statements below are superseded by this section and the current plan.
