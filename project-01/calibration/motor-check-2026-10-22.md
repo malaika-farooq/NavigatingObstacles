@@ -37,3 +37,5 @@ The user then authorized continuation, followed by a request for a five-second r
 | 5 seconds | 0 / -444 | 0 / -454 | -374° / -375° | Both 0 |
 
 Both runs finished with empty motor states and no observed stall/overload flags during polling. The five-second run produced approximately 1.23 and 1.26 motor revolutions, with a net raw gyro change of -1°. This is a short forward-response check, not a measured straightness or distance calibration: no floor distance, lateral deviation, full heading history, or wheel slip was measured. User observation of chassis motion is still pending. Gyro sign remains unset and `CALIBRATED` remains false.
+
+The user subsequently confirmed that the five-second run moved toward the front caster with no visible veering. This confirms the configured forward signs and the observed behavior of this short run; distance accuracy and longer-run straightness remain unmeasured. A subsequent manual gyro-direction check confirmed `GYRO_CCW_SIGN = -1`; see the sensor-check record. Overall calibration remains incomplete.

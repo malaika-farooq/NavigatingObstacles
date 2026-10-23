@@ -2,6 +2,10 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Latest confirmed signs and physical observations
+
+All three signs in `src/config.py` are now confirmed as **-1**: left motor forward, right motor forward, and gyro CCW. The user confirmed the five-second two-wheel test moved toward the front caster with no visible veering. A manual counterclockwise turn from a captured steady -483-degree gyro baseline produced five steady -548-degree readings. The actual hand-turn angle was not measured; do not treat this as a 90-degree accuracy calibration. Both motors were stopped with zero speed during the gyro checks, and no new motor commands were issued. See the calibration records. These results supersede older pending-sign statements below. Geometry and full motion calibration are still incomplete, `CALIBRATED` remains false, and the updated source has not been deployed by these diagnostics.
+
 ## Latest motor check
 
 After direction confirmation, both wheels were tested together at raw -90 counts/s, first for two seconds and then for five seconds as requested. The five-second run recorded encoder changes A -444 / B -454 counts, raw gyro -374° to -375°, and both final speeds zero. User observation and measured floor distance remain pending; this is not complete straight-line calibration. No further motion should start automatically on reading this handoff.

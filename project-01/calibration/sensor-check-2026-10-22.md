@@ -47,3 +47,11 @@ This confirms a strong response to nearby white material. The earlier 5% reading
 - Longer stationary drift tests representative of a full run.
 - Fixed-height color readings over the actual floor and black cardboard/goal material.
 - Actual controller imports/self-test, physical motion, motor direction checks and geometry calibration. The earlier full-code deployment is still not activated by these direct sensor diagnostics.
+
+## Subsequent manual gyro direction check
+
+After the floor motor checks, the user manually rotated the robot counterclockwise as viewed from above. The initial turn was not exactly 90 degrees, and its immediate starting reading was not captured; it is not an angular-accuracy calibration. After that turn, 16 reads were steady at -483 degrees in `GYRO-ANG` mode.
+
+Using that stationary -483-degree baseline, the user made a second counterclockwise hand turn. Five subsequent reads at approximately 0.2-second intervals were all -548 degrees, a raw change of -65 degrees. Both motor states were empty and both speeds zero during the checks; no motor commands or gyro mode changes were issued. This confirms **GYRO_CCW_SIGN = -1**, now saved in `src/config.py`. The actual physical angle was not measured, so scale accuracy and measured-angle repeatability remain unverified.
+
+Motor directions have also since been confirmed and a five-second forward check completed; see [motor-check record](motor-check-2026-10-22.md). These later results supersede the corresponding pending items above. Geometry, longer-term drift, actual floor/black color contrast and full controller verification remain pending; overall `CALIBRATED` is still false.
