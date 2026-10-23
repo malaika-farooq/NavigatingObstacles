@@ -55,6 +55,16 @@ def configured_path():
     return plan(assigned_course, robot_radius_m, position_allowance_m, config.GRID_SPACING_M)
 
 
+def preview_course_path(arguments):
+    """Plan the course.py map with a stated, unmeasured radius/error for checking input."""
+    from planner import plan
+    robot_radius_m = float(arguments[0]) if arguments else 0.13
+    position_allowance_m = float(arguments[1]) if len(arguments) > 1 else 0.05
+    print("PREVIEW ONLY: radius", robot_radius_m, "m, error", position_allowance_m,
+          "m are assumed, not measured")
+    return plan(config.course(), robot_radius_m, position_allowance_m, config.GRID_SPACING_M)
+
+
 def demo_path():
     from planner import demo_course, plan
     print("SYNTHETIC DEMO ONLY: not the assignment course")
@@ -89,6 +99,8 @@ def main(arguments):
         check_color()
     elif command == "plan":
         print_path(configured_path())
+    elif command == "plan-course":
+        print_path(preview_course_path(arguments[1:]))
     elif command == "plan-demo":
         print_path(demo_path())
     elif command == "simulate-demo":
@@ -97,7 +109,7 @@ def main(arguments):
         from selftest import run
         run()
     else:
-        raise ValueError("Commands: inspect, selftest, color-check, simulate-demo, plan-demo, plan, monitor [samples]")
+        raise ValueError("Commands: inspect, selftest, color-check, simulate-demo, plan-demo, plan-course [radius error], plan, monitor [samples]")
 
 
 if __name__ == "__main__":
