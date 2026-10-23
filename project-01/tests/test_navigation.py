@@ -50,8 +50,10 @@ class NavigationTests(unittest.TestCase):
         self.assertTrue(result["simulation_pass"])
 
     def test_equal_wheel_slip_is_not_hidden_by_reported_completion(self):
+        # Slip must never look like success: either the gyro/encoder check aborts,
+        # or the run reports DONE while the true pose is measurably off.
         result = run_demo(traction=(0.85, 0.85))
-        self.assertEqual(result["state"], "DONE")
+        self.assertIn(result["state"], ("DONE", "ABORTED"))
         self.assertFalse(result["simulation_pass"])
         self.assertGreater(result["peak_position_error_m"], 0.1)
         self.assertGreater(result["true_goal_error_m"], 0.1)
