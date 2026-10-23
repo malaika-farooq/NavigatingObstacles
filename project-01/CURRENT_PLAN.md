@@ -13,7 +13,10 @@ Updated October 22, 2026. This status supersedes historical pending items in the
 - Standard kit tires: nominal diameter 56 mm and width 28 mm, documented by LEGO. Both diameter settings are 0.056 m; effective rolling diameters have not been measured.
 - Known-map planner, sampled controller, offline simulations, and local behavioral tests are implemented. Source changes belong on GitHub main after review/tests; repository updates do not imply robot deployment.
 
-Validation for this update: **41 local behavioral tests pass**, including threshold equality, invalid reflection/threshold rejection, and mode-preserving sensor classification. The local compatibility/logic self-test also passes. These are laptop results; on-brick execution of the updated source remains pending.
+- PDF-format course input and wavefront planning are implemented. The working workspace is 16 × 10 tiles (4.88 × 3.05 m); the example has 13 active obstacles, with unused padding ignored. The planner remains independent of these coordinates. Starting heading is unconfirmed (`None`), and is required by the motion gate but not by planning.
+- Endpoint connections now consider all collision-free visible grid cells. Regression checks cover an isolated nearest endpoint cell in both directions and preservation of short obstacle-corner waypoints. Slip/drift evidence uses a fixed route so planner route choices cannot change the test scenario.
+
+Validation for this update: **49 local behavioral tests pass**, including endpoint connectivity, corner preservation, heading gating, threshold equality, invalid reflection/threshold rejection, and mode-preserving sensor classification. The local compatibility/logic self-test also passes. These are laptop results; on-brick execution of the updated source remains pending.
 
 ## Next steps
 
@@ -21,7 +24,7 @@ Validation for this update: **41 local behavioral tests pass**, including thresh
 2. When a ruler is available, measure wheel center spacing, footprint radius, and color-lens offsets. For matching 28 mm tires, center spacing is outside-to-outside tire width minus 28 mm. Wheel spacing measurement is explicitly deferred by the user.
 3. Implement and validate the hardware control loop, independent motor watchdog, operator abort, and stop-on-failure behavior. Timed diagnostic pulses already used kernel stop timers; this does not validate a future raw-duty navigation runner.
 4. Measure straight distance and known-angle turns, tune gains and fault limits, check longer gyro drift, and establish a position-error allowance. Fill remaining geometry and enable overall motion calibration only when supported by these results.
-5. Confirm workspace dimensions, starting heading, assigned obstacle/start/goal coordinates and arrival criterion. Plan using the measured footprint plus error allowance; validate clearance and repeat complete routes for the report/demo.
+5. Use the PDF workspace (4.88 × 3.05 m) as the working layout; update `course.py` if the supplied layout differs. Confirm starting heading, assigned obstacle/start/goal coordinates and arrival criterion. Plan using the measured footprint plus error allowance; validate clearance and repeat complete routes for the report/demo.
 6. Integrate black detection as goal confirmation near the mapped goal, accounting for the sensor offset. Black detected elsewhere must not declare arrival. The sampled navigator currently uses positional arrival and has no color input; this integration remains pending.
 
 The 29% threshold is the selected working setting; further material sampling is not a prerequisite requested by the user. Its evidence is the tabletop/bubble-wrap comparison, not an actual-course material test. `CALIBRATED` remains false because motion calibration and geometry are incomplete. No motor run is part of these code/documentation updates.

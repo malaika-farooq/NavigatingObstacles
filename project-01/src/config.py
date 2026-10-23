@@ -55,6 +55,9 @@ def require_geometry():
 
 def require_motion_calibration():
     require_geometry()
+    from geometry import finite
+    if START_POSE is None or not finite(START_POSE[2]):
+        raise ValueError("Confirm start_heading_deg in course.py")
     if not CALIBRATED or CALIBRATION_ID == "unmeasured":
         raise ValueError("Motion disabled: calibration has not been confirmed")
     for name in ("LEFT_FORWARD_SIGN", "RIGHT_FORWARD_SIGN", "GYRO_CCW_SIGN"):

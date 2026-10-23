@@ -49,17 +49,24 @@ class NavigationTests(unittest.TestCase):
         result = run_demo(quantization_deg=1)
         self.assertTrue(result["simulation_pass"])
 
+    def fault_test_route(self):
+        # Fixed, collision-free course route: fault evidence must not depend on
+        # changes to the planner's choice among valid routes.
+        return [(0.4, 1.0), (1.1, 1.0), (1.1, 1.4), (2.6, 1.4), (2.6, 1.0)]
+
     def test_equal_wheel_slip_is_not_hidden_by_reported_completion(self):
         # Slip must never look like success: either the gyro/encoder check aborts,
         # or the run reports DONE while the true pose is measurably off.
-        result = run_demo(traction=(0.85, 0.85))
+        with mock.patch("simulation.plan", return_value=self.fault_test_route()):
+            result = run_demo(traction=(0.85, 0.85))
         self.assertIn(result["state"], ("DONE", "ABORTED"))
         self.assertFalse(result["simulation_pass"])
         self.assertGreater(result["peak_position_error_m"], 0.1)
         self.assertGreater(result["true_goal_error_m"], 0.1)
 
     def test_gyro_drift_can_defeat_position_estimate(self):
-        result = run_demo(gyro_drift_deg_s=0.1)
+        with mock.patch("simulation.plan", return_value=self.fault_test_route()):
+            result = run_demo(gyro_drift_deg_s=0.1)
         self.assertTrue(result["simulation_pass"])
         self.assertGreater(result["peak_position_error_m"], 0.05)
         self.assertLess(result["true_goal_error_m"], result["goal_radius_m"])

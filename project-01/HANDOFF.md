@@ -1,3 +1,5 @@
+<!-- Current planning changes: see CURRENT_PLAN.md. Workspace uses the PDF 4.88 x 3.05 m layout; starting heading remains unconfirmed. Wavefront endpoint connectors consider all visible cells. -->
+
 # Project 01 agent handoff
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
