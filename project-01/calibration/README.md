@@ -1,5 +1,7 @@
 # Calibration records
 
+Current accepted settings: motor forward signs -1/-1, gyro CCW sign -1, nominal kit wheel diameters 0.056 m, white reflection 57%, black reflection 1%, and **black threshold 29% inclusive**. Calibration ID: `2026-10-22-signs-color-29`. Wheel spacing, effective rolling diameters, footprint and lens offsets remain unmeasured; overall `CALIBRATED` is false. See [current plan](../CURRENT_PLAN.md) and the dated sensor/motor records. Sensor discovery and sign checks below have now been completed.
+
 Keep measured results here, with the Git revision, date, floor, battery condition, payload, trial failures, and method. Copy validated parameters into `src/config.py` and set a unique `CALIBRATION_ID`.
 
 Record motor forward signs, gyro CCW sign, effective wheel diameters, track width, footprint radius, starting-placement error, and (if fitted) the color lens's forward/left offsets. The builder confirmed left motor A, right motor B, gyro input 1 and color input 4. Sensor discovery and motor rotation signs still need checking.

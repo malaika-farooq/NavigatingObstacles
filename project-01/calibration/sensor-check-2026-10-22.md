@@ -55,3 +55,21 @@ After the floor motor checks, the user manually rotated the robot counterclockwi
 Using that stationary -483-degree baseline, the user made a second counterclockwise hand turn. Five subsequent reads at approximately 0.2-second intervals were all -548 degrees, a raw change of -65 degrees. Both motor states were empty and both speeds zero during the checks; no motor commands or gyro mode changes were issued. This confirms **GYRO_CCW_SIGN = -1**, now saved in `src/config.py`. The actual physical angle was not measured, so scale accuracy and measured-angle repeatability remain unverified.
 
 Motor directions have also since been confirmed and a five-second forward check completed; see [motor-check record](motor-check-2026-10-22.md). These later results supersede the corresponding pending items above. Geometry, longer-term drift, actual floor/black color contrast and full controller verification remain pending; overall `CALIBRATED` is still false.
+
+## White tabletop after color-sensor remount
+
+The user remounted the color sensor and returned the robot to a white tabletop. Thirty direct sysfs reads from input 4 in `COL-REFLECT` mode, separated by nominal 0.1-second sleeps, were all **57%** (minimum, maximum and mean 57%). The sensor reported units `pct`, decimals 0. Both motor states were empty and both speeds zero before sampling; this read-only diagnostic issued no motor commands or sensor-mode changes.
+
+This is the new white-tabletop reference for the remounted sensor. The mount height was not measured, and black material and actual course-floor readings at this mounting height remain pending. Do not combine this result with earlier close-paper readings to select a black threshold.
+
+## Black bubble-wrap comparison after remount
+
+The user then placed black bubble wrap beneath the sensor. Thirty direct sysfs reads from input 4 in `COL-REFLECT` mode, separated by nominal 0.1-second sleeps, were all **1%** (minimum, maximum and mean 1%). Both motor states were empty and both speeds zero before sampling; no motor commands or mode changes were issued.
+
+This gives strong observed contrast against the 57% white-tabletop reading at the current mount. It is a stationary comparison with bubble wrap, not calibration against the assignment's flat black cardboard and actual course floor. Bubble-wrap surface height and texture differ from those materials. No production threshold has been configured; repeat on the course materials before selecting one.
+
+## Accepted current color calibration
+
+The user explicitly accepted the remounted-sensor white tabletop (57%) and black bubble wrap (1%) readings as the calibration to use now, superseding the pending-threshold recommendations above. The midpoint is `(57 + 1) / 2 = 29%`. `src/config.py` stores both references and `COLOR_BLACK_THRESHOLD_PERCENT = 29`. Reflection **at or below 29% is black**; above 29% is nonblack. No additional course-material sampling is required before using this selected setting. Actual-course detection performance has not been measured.
+
+`hardware.ColorSensor.is_black(threshold_percent)` reads and classifies one reflection sample. The nonmoving `color-check` command applies the configured threshold to one read and prints the value and decision. Both reject unexpected sensor modes rather than changing modes. Classification is separate from location-gated goal confirmation, which remains a future navigation integration step.

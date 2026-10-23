@@ -105,6 +105,36 @@ class ControllerTests(unittest.TestCase):
 
 
 class HardwareBoundaryTests(unittest.TestCase):
+    def test_black_detection_uses_calibrated_boundary(self):
+        threshold = config.COLOR_BLACK_THRESHOLD_PERCENT
+        self.assertTrue(hardware.reflection_is_black(1, threshold))
+        self.assertTrue(hardware.reflection_is_black(29, threshold))
+        self.assertFalse(hardware.reflection_is_black(30, threshold))
+        self.assertFalse(hardware.reflection_is_black(57, threshold))
+
+    def test_black_detection_rejects_invalid_samples_and_thresholds(self):
+        for invalid in (-1, 101, float("nan"), float("inf")):
+            with self.assertRaises(ValueError):
+                hardware.reflection_is_black(invalid, 29)
+            with self.assertRaises(ValueError):
+                hardware.reflection_is_black(1, invalid)
+
+    def test_color_detection_reads_reflection_without_changing_mode(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "mode").write_text("COL-REFLECT")
+            (root / "decimals").write_text("0")
+            (root / "value0").write_text("1")
+            sensor = hardware.ColorSensor.__new__(hardware.ColorSensor)
+            sensor.path = directory
+            self.assertTrue(sensor.is_black(29))
+            (root / "value0").write_text("57")
+            self.assertFalse(sensor.is_black(29))
+            (root / "mode").write_text("COL-COLOR")
+            with self.assertRaises(ValueError):
+                sensor.is_black(29)
+            self.assertEqual((root / "mode").read_text(), "COL-COLOR")
+
     def test_discovery_uses_address_not_device_number(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

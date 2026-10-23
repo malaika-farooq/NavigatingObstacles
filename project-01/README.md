@@ -1,6 +1,6 @@
 # Project 01: EV3 navigation
 
-New agent or teammate: start with [HANDOFF.md](HANDOFF.md) for project decisions, verified hardware/runtime facts, the interrupted deployment status, and ordered next steps.
+Start with [CURRENT_PLAN.md](CURRENT_PLAN.md) for completed checks and remaining work. New agent or teammate: also read [HANDOFF.md](HANDOFF.md) for project decisions, verified hardware/runtime facts, the interrupted deployment status, and ordered next steps.
 
 Target: **Pybricks MicroPython 2.0.0 on ev3dev-stretch**, using only built-in modules and our own code. No `pybricks`, `ev3dev2`, robotics framework, NumPy, or external planner imports. The Linux hardware drivers provide raw device access; our adapter uses their sysfs files directly. We retain the existing firmware and SD-card setup.
 
@@ -33,7 +33,7 @@ logs/            Downloaded trial data (ignored by Git)
 build-plan/      Assembly companion and adversarial review
 ```
 
-Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. The builder confirmed **gyro input 1 and color input 4**, and both sensors were discovered on the brick during the [initial sensor check](calibration/sensor-check-2026-10-22.md). Forward motor signs and gyro sign still require physical tests. Ports can be changed in `src/config.py`. Earlier build-guide wiring diagrams use suggested inputs 2/3; the confirmed 1/4 configuration takes precedence.
+Robot orientation: **front caster, rear drive wheels**. Looking forward from behind: **A = left motor, B = right**. The builder confirmed **gyro input 1 and color input 4**, and both sensors were discovered on the brick during the [initial sensor check](calibration/sensor-check-2026-10-22.md). Both forward motor signs and the gyro CCW sign are confirmed -1. Nominal wheel diameters are 0.056 m; wheel spacing remains deferred. The accepted black threshold is 29% (inclusive), from white tabletop 57% and black bubble wrap 1%. Ports can be changed in `src/config.py`. Earlier build-guide wiring diagrams use suggested inputs 2/3; the confirmed 1/4 configuration takes precedence.
 
 ## Start locally
 
@@ -78,9 +78,13 @@ That example is this session's detected brick address and laptop interface, not 
 
 Deployment copies a timestamped release, verifies source checksums on the brick, and then updates the `current` symlink. It never starts robot code. The remote project is `/home/robot/navigating-obstacles/project-01`; previous releases and logs are preserved. Each release records the Git commit, whether the working tree is dirty, and checksums of the actual source files. A dirty deployment is identifiable by its source checksums even before it is committed.
 
-`inspect`, `monitor`, `plan`, `plan-demo`, and `selftest` never issue motor or sensor-mode commands. Monitor captures raw readings in the sensor's current mode; it is not automatically a calibrated heading or color measurement. `monitor` saves a diagnostic text log on the brick. Use `fetch-logs` to download it.
+`inspect`, `monitor`, `color-check`, `plan`, `plan-demo`, and `selftest` never issue motor or sensor-mode commands. Monitor captures raw readings in the sensor's current mode; it is not automatically a calibrated heading or color measurement. `monitor` saves a diagnostic text log on the brick. Use `fetch-logs` to download it.
+
+Run `python3 project-01/scripts/ev3.py color-check` after deploying to read and classify reflection using the configured 29% threshold. It requires the sensor to already be in `COL-REFLECT` mode and sends no motor or mode commands. Black classification alone does not declare goal arrival.
 
 ## Development sequence
+
+Follow [CURRENT_PLAN.md](CURRENT_PLAN.md) for current status; the milestones below describe the overall sequence. Device/sign checks and a short observed forward test are completed.
 
 1. Inspect device ports and confirm configuration, then test runtime compatibility on the actual brick.
 2. Implement explicit, short bench direction tests with wheels lifted, a timeout and a working abort/watchdog. Do not begin with a route runner.
@@ -89,7 +93,7 @@ Deployment copies a timestamped release, verifies source checksums on the brick,
 5. Build and test distance and absolute-heading primitives, then update odometry throughout motion. Treat pose as uncertain after a slip/stall; realign before restarting unless independent localization recovers it.
 6. Populate the actual course and test the planner. Integrate waypoint execution only after full-route clearance/error trials support it. Account for corrected paths and turning envelopes.
 
-This is an **offline-tested controller and starter hardware structure**, not a tuned autonomous navigation implementation. `Navigator.step()` computes bounded duties from supplied samples and is exercised against a fictional model. It does not open devices, schedule a real-time loop, or independently stop physical motors. There is intentionally no command that executes physical motion. `MotionSession` remains the boundary for future hardware integration; the CLI cannot enable it. `CALIBRATED` remains false and physical dimensions remain unset.
+This is an **offline-tested controller and starter hardware structure**, not a tuned autonomous navigation implementation. `Navigator.step()` computes bounded duties from supplied samples and is exercised against a fictional model. It does not open devices, schedule a real-time loop, or independently stop physical motors. There is intentionally no command that executes physical motion. `MotionSession` remains the boundary for future hardware integration; the CLI cannot enable it. `CALIBRATED` remains false; wheel diameters use the nominal kit size, while track, footprint and other required geometry remain unset.
 
 Use the configured footprint radius plus measured position-error allowance when planning. The expanded-box/circle model is conservative; a rejected grid search is not proof that the physical course is impossible. BFS minimizes grid hops, not physical route length, and exact endpoint connectors can have arbitrary headings. Routes require physical validation. Seam correction is outside the current implementation; a black floor reading is not sufficient to declare arrival outside the mapped goal region.
 

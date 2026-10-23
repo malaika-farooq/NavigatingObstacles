@@ -4,7 +4,7 @@ None means unmeasured/unconfirmed, never an implicit hardware default.
 Front = caster end. Left/right are viewed from behind looking forward.
 """
 RUNTIME = "pybricks-micropython 2.0.0 on ev3dev-stretch"
-CALIBRATION_ID = "unmeasured"
+CALIBRATION_ID = "2026-10-22-signs-color-29"
 CALIBRATED = False
 
 LEFT_MOTOR_PORT = "A"  # Confirmed by the builder.
@@ -15,13 +15,19 @@ GYRO_PORT = "1"          # Confirmed by the builder; verify discovery on reconne
 COLOR_PORT = "4"         # Confirmed by the builder; optional, set None to omit.
 GYRO_CCW_SIGN = -1       # Observed CCW hand turn decreased raw gyro angle.
 
-LEFT_WHEEL_DIAMETER_M = None
-RIGHT_WHEEL_DIAMETER_M = None
+# Nominal LEGO 45544 tire size; effective rolling diameters are not measured yet.
+LEFT_WHEEL_DIAMETER_M = 0.056
+RIGHT_WHEEL_DIAMETER_M = 0.056
 WHEEL_TRACK_M = None
 FOOTPRINT_RADIUS_M = None  # Farthest point from midpoint of drive wheels.
 POSITION_ERROR_ALLOWANCE_M = None
 COLOR_OFFSET_FORWARD_M = None
 COLOR_OFFSET_LEFT_M = None
+
+COLOR_WHITE_REFLECTION_PERCENT = 57
+COLOR_BLACK_REFLECTION_PERCENT = 1
+# User accepted this calibration: reflection <= 29% is black.
+COLOR_BLACK_THRESHOLD_PERCENT = 29
 
 # Fill with the actual assigned course. PDF has conflicting workspace widths.
 WORKSPACE_M = None       # (width, height), origin at lower-left.

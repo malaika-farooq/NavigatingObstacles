@@ -2,6 +2,10 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Current plan and accepted calibration
+
+Read [CURRENT_PLAN.md](CURRENT_PLAN.md) first for completed checks and ordered remaining work. The user accepted white tabletop 57% and black bubble wrap 1% after remounting: **black threshold 29%, inclusive**. The configured color references and threshold are implemented through the hardware classifier and nonmoving `color-check` CLI. Nominal kit wheel diameters are now 0.056 m, sourced from LEGO's 56 x 28 mm tire listing; they are not measured effective rolling diameters. Both forward signs and gyro CCW sign are -1. Wheel spacing is deferred, other motion geometry remains incomplete, and `CALIBRATED` remains false. The starter work was merged to main at a143094; new updates do not imply on-brick deployment. Historical pending-threshold, unknown-sign, unset-diameter and branch-only statements below are superseded by this section and the current plan.
+
 ## Latest confirmed signs and physical observations
 
 All three signs in `src/config.py` are now confirmed as **-1**: left motor forward, right motor forward, and gyro CCW. The user confirmed the five-second two-wheel test moved toward the front caster with no visible veering. A manual counterclockwise turn from a captured steady -483-degree gyro baseline produced five steady -548-degree readings. The actual hand-turn angle was not measured; do not treat this as a 90-degree accuracy calibration. Both motors were stopped with zero speed during the gyro checks, and no new motor commands were issued. See the calibration records. These results supersede older pending-sign statements below. Geometry and full motion calibration are still incomplete, `CALIBRATED` remains false, and the updated source has not been deployed by these diagnostics.
