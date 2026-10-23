@@ -2,6 +2,38 @@
 
 Updated: October 22, 2026. Read this before operating the robot or changing the runtime.
 
+## Latest confirmed signs and physical observations
+
+All three signs in `src/config.py` are now confirmed as **-1**: left motor forward, right motor forward, and gyro CCW. The user confirmed the five-second two-wheel test moved toward the front caster with no visible veering. A manual counterclockwise turn from a captured steady -483-degree gyro baseline produced five steady -548-degree readings. The actual hand-turn angle was not measured; do not treat this as a 90-degree accuracy calibration. Both motors were stopped with zero speed during the gyro checks, and no new motor commands were issued. See the calibration records. These results supersede older pending-sign statements below. Geometry and full motion calibration are still incomplete, `CALIBRATED` remains false, and the updated source has not been deployed by these diagnostics.
+
+## Latest motor check
+
+After direction confirmation, both wheels were tested together at raw -90 counts/s, first for two seconds and then for five seconds as requested. The five-second run recorded encoder changes A -444 / B -454 counts, raw gyro -374° to -375°, and both final speeds zero. User observation and measured floor distance remain pending; this is not complete straight-line calibration. No further motion should start automatically on reading this handoff.
+
+The user subsequently placed the robot on the floor and authorized motor tests. Both motors responded to short positive/negative kernel-timed speed pulses. Longer observed tests established that positive raw commands drive **both wheels backward, away from the front caster**. `LEFT_FORWARD_SIGN` and `RIGHT_FORWARD_SIGN` are now **-1** in `src/config.py`. Both motors were stopped after testing. See [motor-check record](calibration/motor-check-2026-10-22.md). Gyro CCW sign and geometry remain unconfirmed. These diagnostics supersede historical statements below that no motor commands have been issued or motor directions are unknown, but do not validate the navigation controller or finish the interrupted deployment. Overall `CALIBRATED` remains false.
+
+## Latest connected sensor results
+
+Both sensors are now discovered on the actual brick: gyro **input 1**, color **input 4**. A stationary 101-sample check over 11.73 seconds showed no observable gyro angle change (-48 degrees throughout); motor encoder positions were unchanged. Color reflection was 5% with the lens more than 1 cm above a white table, then **83–85%** when the user placed white paper close beneath it. Mounting height and black/floor contrast still need calibration; gyro direction and known-angle response have not been checked. Built-in `gc.collect()` and `gc.mem_free()` also work on this actual Pybricks 2 build, reporting approximately 8.18 MB free heap in the diagnostic. See [sensor-check record](calibration/sensor-check-2026-10-22.md). These direct diagnostics did not activate the earlier deployment, run the full controller, or issue motor commands. They supersede older statements below that sensors and the GC API had not yet been verified.
+
+## Current scope, style and memory decisions
+
+The user requested small functions with one responsibility, intermediate variables that document the math, and strict alignment with the assignment PDF. Navigation, planning, odometry, control, device reads and CLI dispatch have been refactored accordingly. Keep the task focused on the supplied map/start/goal, collision-free travel inside the workspace, and report/demo evidence. Do not introduce unknown-obstacle exploration, required seam localization or shortest-path optimization. The optional plotting script and unused seam-correction flag were removed.
+
+The simulated final-arrival check now uses the PDF's **0.305 m goal radius**, rather than the 0.015 m intermediate-waypoint tolerance. The gyro-drift example still has significant localization error but finishes inside that goal area; do not repeat the older claim that it necessarily fails arrival. Physical footprint clearance and estimator error are reported separately.
+
+**38 local tests pass.** The controller reuses its input/output and pose buffers. `Navigator.step()` returns a borrowed mutable dictionary whose `pose` list is also reused; log values immediately or copy a snapshot. Automatic garbage collection remains enabled; explicit `gc.collect()` is limited to measured stopped transitions and idle planning commands. MicroPython 1.11 documents GC support, but the actual EV3 build's heap API and pause durations have not been checked. The runtime command now checks these capabilities. No robot connection was used for this refactor. Earlier sections below are historical context where they mention 35 tests, optional plotting, or a failed drift-arrival scenario.
+
+## Latest offline continuation
+
+The user subsequently requested development **without the robot connected**. Work continues on `nick-project-01-starter`; no robot/network access or deployment is part of this offline work. A handoff-only copy was separately pushed to `main` at `f9a29d4`; starter code remains on its branch.
+
+Since the original handoff below, `navigation.py` adds a sampled turn/drive/settle controller with duty limits, route revalidation, stall/timing/timeout/abort handling. `simulation.py` and laptop scripts exercise it against a fictional plant and export CSV/JSON results and optional plots. **35 local tests pass.** Ideal, unequal-motor and one-degree-quantized scenarios pass; equal-wheel slip and gyro drift intentionally expose a mismatch between reported completion and simulated true arrival.
+
+Read [OFFLINE_DEVELOPMENT.md](OFFLINE_DEVELOPMENT.md) for implementation details, results and remaining work. Robot code still imports no external robotics libraries, calibration remains unset, the CLI has no physical-motion command, and an independent hardware watchdog/runner is still missing. New code has not been tested under the actual EV3 interpreter. The interrupted deployment described below remains interrupted; no later on-brick verification is implied by the offline test results. The following original handoff records the baseline before this continuation.
+
+**Latest port correction from the builder:** left motor **A**, right motor **B**, gyro sensor input **1**, color sensor input **4**. `src/config.py` now reflects these assignments. They supersede the earlier proposed sensor inputs 2/3 and wiring illustrations. No new device discovery occurred during offline development; confirm the sensors when reconnecting. The user briefly called the sensor ports C/D, then clarified the numbered inputs 1/4.
+
 ## Objective and user decisions
 
 Build and program a LEGO MINDSTORMS Education EV3 to navigate a known obstacle course. Continue from the existing starter; the next priority is hardware verification and repeatable motion, not more framework setup.
@@ -49,8 +81,8 @@ The user's robot has **two driven wheels at the rear and a caster at the front**
 | Left large motor | **Port A**, confirmed by user |
 | Right large motor | **Port B**, confirmed by user |
 | Motor forward signs | Unconfirmed; establish with wheels lifted |
-| Gyro input | `2` in config is proposed, not a detected assignment |
-| Color input | `3` in config is proposed, not a detected assignment |
+| Gyro input | **1**, subsequently confirmed by the builder; discovery pending |
+| Color input | **4**, subsequently confirmed by the builder; discovery pending |
 | Latest device inspection | Two large motors on A/B; sensors were still being connected and were not enumerated |
 | Wheel/track/footprint measurements | Not supplied; config values remain `None` |
 

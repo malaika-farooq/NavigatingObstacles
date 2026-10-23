@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="595.44pt" height="841.68pt" viewBox="0 0 595.44 841.68" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-22T17:04:19.315168</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 841.68
+L 595.44 841.68
+L 595.44 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 285.773574 487.088361
+C 330.128782 487.088361 372.673287 469.46585 404.037156 438.101982
+C 435.401024 406.738113 453.023535 364.193608 453.023535 319.8384
+C 453.023535 275.483192 435.401024 232.938687 404.037156 201.574818
+C 372.673287 170.21095 330.128782 152.588439 285.773574 152.588439
+C 241.418366 152.588439 198.873861 170.21095 167.509992 201.574818
+C 136.146124 232.938687 118.523613 275.483192 118.523613 319.8384
+C 118.523613 364.193608 136.146124 406.738113 167.509992 438.101982
+C 198.873861 469.46585 241.418366 487.088361 285.773574 487.088361
+L 285.773574 487.088361
+z
+" clip-path="url(#p7dda78fa26)" style="fill: none; stroke-dasharray: 4.44,1.92; stroke-dashoffset: 0; stroke: #b55c20; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 172.282529 386.738385
+L 387.318194 386.738385
+L 387.318194 252.938415
+L 172.282529 252.938415
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #f0f3f5; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 204.537879 367.624103
+L 341.921775 367.624103
+L 341.921775 272.052697
+L 204.537879 272.052697
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 249.934297 252.938415
+L 315.639639 252.938415
+L 315.639639 226.656279
+L 249.934297 226.656279
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 249.934297 413.020521
+L 315.639639 413.020521
+L 315.639639 386.738385
+L 249.934297 386.738385
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 252.323582 226.656279
+L 319.223566 226.656279
+L 319.223566 205.152712
+L 252.323582 205.152712
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #333333; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 252.323582 434.524088
+L 319.223566 434.524088
+L 319.223566 413.020521
+L 252.323582 413.020521
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #333333; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 154.36289 334.174111
+C 158.164765 334.174111 161.811437 332.66361 164.499769 329.975278
+C 167.1881 327.286947 168.698601 323.640275 168.698601 319.8384
+C 168.698601 316.036525 167.1881 312.389853 164.499769 309.701522
+C 161.811437 307.01319 158.164765 305.502689 154.36289 305.502689
+C 150.561015 305.502689 146.914343 307.01319 144.226012 309.701522
+C 141.53768 312.389853 140.027179 316.036525 140.027179 319.8384
+C 140.027179 323.640275 141.53768 327.286947 144.226012 329.975278
+C 146.914343 332.66361 150.561015 334.174111 154.36289 334.174111
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #d7dce0; stroke: #24598a; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 351.478916 310.281259
+L 380.150338 310.281259
+L 380.150338 274.441982
+L 351.478916 274.441982
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #cbe9dd; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 399.264619 337.758039
+L 435.103897 337.758039
+L 435.103897 301.918761
+L 399.264619 301.918761
+z
+" clip-path="url(#p7dda78fa26)" style="fill: #ffe1c9; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 387.318194 319.8384
+L 399.264619 319.8384
+" clip-path="url(#p7dda78fa26)" style="fill: none; stroke: #24598a; stroke-width: 3; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 285.773574 445.275871
+L 285.773574 194.400929
+" clip-path="url(#p7dda78fa26)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #24598a; stroke-width: 1.5"/>
+   </g>
+   <g id="line2d_3">
+    <defs>
+     <path id="m21f4a929a5" d="M -7 0
+L 7 0
+M 0 7
+L 0 -7
+" style="stroke: #b55c20"/>
+    </defs>
+    <g clip-path="url(#p7dda78fa26)">
+     <use xlink:href="#m21f4a929a5" x="285.773574" y="319.8384" style="fill: #b55c20; stroke: #b55c20"/>
+    </g>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(252.575195 290.493275)">EV3 brick</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'" transform="translate(243.278477 301.295736)">low, centered</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="282.786968" y="242.135238" transform="rotate(-0 282.786968 242.135238)">L motor</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="282.786968" y="402.217344" transform="rotate(-0 282.786968 402.217344)">R motor</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="285.773574" y="218.242738" transform="rotate(-0 285.773574 218.242738)">L wheel</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="285.773574" y="426.110547" transform="rotate(-0 285.773574 426.110547)">R wheel</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="285.773574" y="218.242738" transform="rotate(-0 285.773574 218.242738)">L wheel</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="285.773574" y="426.110547" transform="rotate(-0 285.773574 426.110547)">R wheel</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="151.973605" y="352.09375" transform="rotate(-0 151.973605 352.09375)">Caster</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="365.814627" y="294.699511" transform="rotate(-0 365.814627 294.699511)">G</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="417.184258" y="311.424507" transform="rotate(-0 417.184258 311.424507)">C</text>
+   </g>
+   <g id="patch_12">
+    <path d="M 287.771451 319.8384
+Q 381.343877 319.8384 473.239253 319.8384
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 469.239253 317.8384
+L 473.239253 319.8384
+L 469.239253 321.8384
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="481.694957" y="315.05983" transform="rotate(-0 481.694957 315.05983)">+x forward</text>
+   </g>
+   <g id="patch_13">
+    <path d="M 285.773574 317.839065
+Q 285.773574 248.158845 285.773574 180.155676
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 283.773574 184.155676
+L 285.773574 180.155676
+L 287.773574 184.155676
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="290.552145" y="171.70272" transform="rotate(-0 290.552145 171.70272)">+y left</text>
+   </g>
+   <g id="patch_14">
+    <path d="M 106.577187 420.652858
+Q 106.577187 319.838189 106.577187 219.02352
+" style="fill: none; stroke: #24598a; stroke-linecap: round"/>
+    <path d="M 108.577187 416.652858
+L 106.577187 420.652858
+L 104.577187 416.652858
+" style="fill: none; stroke: #24598a; stroke-linecap: round"/>
+    <path d="M 104.577187 223.02352
+L 106.577187 219.02352
+L 108.577187 223.02352
+" style="fill: none; stroke: #24598a; stroke-linecap: round"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #24598a" transform="translate(99.618093 337.684494) rotate(-90)">Track b</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #b55c20" x="363.425342" y="499.034787" transform="rotate(-0 363.425342 499.034787)">Dashed circle: turning envelope</text>
+   </g>
+  </g>
+  <g id="text_15">
+   <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="40.40064" transform="rotate(-0 44.658 40.40064)">PROJECT 01 / EV3 NAVIGATION</text>
+  </g>
+  <g id="text_16">
+   <text style="font-weight: 700; font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24598a" x="44.658" y="72.38448" transform="rotate(-0 44.658 72.38448)">01 / Top-view layout</text>
+  </g>
+  <g id="text_17">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="44.658" y="98.47656" transform="rotate(-0 44.658 98.47656)">Functional layout / not to scale / use official manuals for exact LEGO connections.</text>
+  </g>
+  <g id="text_18">
+   <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="44.658" y="812.2212" transform="rotate(-0 44.658 812.2212)">Build companion v2 / 22 Oct 2026 / physical assembly not yet validated</text>
+  </g>
+  <g id="text_19">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="550.782" y="812.2212" transform="rotate(-0 550.782 812.2212)">3</text>
+  </g>
+  <g id="text_20">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="542.8836" transform="rotate(-0 44.658 542.8836)">Reference points</text>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="564.76728" transform="rotate(-0 44.658 564.76728)">O is the midpoint between the drive-wheel contact centers. Define robot pose here; do not</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="579.49668" transform="rotate(-0 44.658 579.49668)">silently use the brick center or front sensor as the position reference. +x is forward; +y</text>
+  </g>
+  <g id="text_23">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="594.22608" transform="rotate(-0 44.658 594.22608)">is left; positive heading is counterclockwise when viewed from above.</text>
+  </g>
+  <g id="text_24">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="614.00556" transform="rotate(-0 44.658 614.00556)">G = gyro on a rigid mount; exact position may differ. C = OPTIONAL downward color sensor,</text>
+  </g>
+  <g id="text_25">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="628.73496" transform="rotate(-0 44.658 628.73496)">drawn on the centerline for clarity. If the official module is offset sideways, keep it and</text>
+  </g>
+  <g id="text_26">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="643.46436" transform="rotate(-0 44.658 643.46436)">measure that offset. Do not rebuild a sound module just to match this sketch.</text>
+  </g>
+  <g id="text_27">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="671.66064" transform="rotate(-0 44.658 671.66064)">Clearance rule</text>
+  </g>
+  <g id="text_28">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="693.54432" transform="rotate(-0 44.658 693.54432)">Measure R from O to the farthest protruding point, including cables. Use a circle of radius</text>
+  </g>
+  <g id="text_29">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="708.27372" transform="rotate(-0 44.658 708.27372)">R plus an error allowance for conservative planning and in-place turns. A 0.61 m corridor</text>
+  </g>
+  <g id="text_30">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="723.00312" transform="rotate(-0 44.658 723.00312)">admits this envelope only when 2(R + allowance) &lt; 0.61 m. This is a design check, not a</text>
+  </g>
+  <g id="text_31">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="737.73252" transform="rotate(-0 44.658 737.73252)">measured claim about the base.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7dda78fa26">
+   <rect x="76.711123" y="134.6688" width="442.017755" height="370.3392"/>
+  </clipPath>
+ </defs>
+</svg>

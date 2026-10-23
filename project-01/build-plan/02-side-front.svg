@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="595.44pt" height="841.68pt" viewBox="0 0 595.44 841.68" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-22T17:04:19.600367</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 841.68
+L 595.44 841.68
+L 595.44 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 152.017636 260.191145
+L 397.411091 260.191145
+L 397.411091 241.786636
+L 152.017636 241.786636
+z
+" clip-path="url(#p440f235967)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 182.691818 241.786636
+L 336.062727 241.786636
+L 336.062727 168.1686
+L 182.691818 168.1686
+z
+" clip-path="url(#p440f235967)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 282.382909 309.269836
+C 293.771752 309.269836 304.695671 304.745001 312.7488 296.691873
+C 320.801928 288.638744 325.326764 277.714825 325.326764 266.325982
+C 325.326764 254.937138 320.801928 244.013219 312.7488 235.960091
+C 304.695671 227.906963 293.771752 223.382127 282.382909 223.382127
+C 270.994066 223.382127 260.070147 227.906963 252.017018 235.960091
+C 243.96389 244.013219 239.439055 254.937138 239.439055 266.325982
+C 239.439055 277.714825 243.96389 288.638744 252.017018 296.691873
+C 260.070147 304.745001 270.994066 309.269836 282.382909 309.269836
+z
+" clip-path="url(#p440f235967)" style="fill: #d5d9df; stroke: #24598a; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 121.343455 309.269836
+C 125.817643 309.269836 130.109183 307.492222 133.272912 304.328493
+C 136.436641 301.164764 138.214255 296.873225 138.214255 292.399036
+C 138.214255 287.924848 136.436641 283.633308 133.272912 280.469579
+C 130.109183 277.30585 125.817643 275.528236 121.343455 275.528236
+C 116.869266 275.528236 112.577726 277.30585 109.413997 280.469579
+C 106.250268 283.633308 104.472655 287.924848 104.472655 292.399036
+C 104.472655 296.873225 106.250268 301.164764 109.413997 304.328493
+C 112.577726 307.492222 116.869266 309.269836 121.343455 309.269836
+z
+" clip-path="url(#p440f235967)" style="fill: #e6e9ec; stroke: #24598a; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 417.349309 292.399036
+L 463.360582 292.399036
+L 463.360582 250.988891
+L 417.349309 250.988891
+z
+" clip-path="url(#p440f235967)" style="fill: #ffe1c9; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 52.326545 309.269836
+L 543.113455 309.269836
+" clip-path="url(#p440f235967)" style="fill: none; stroke: #666666; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 397.411091 250.988891
+L 438.821236 250.988891
+L 438.821236 250.988891
+" clip-path="url(#p440f235967)" style="fill: none; stroke: #24598a; stroke-width: 3; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="274.714364" y="253.326782" transform="rotate(-0 274.714364 253.326782)">Frame</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="259.377273" y="207.31586" transform="rotate(-0 259.377273 207.31586)">EV3 brick</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="440.354945" y="274.031854" transform="rotate(-0 440.354945 274.031854)">C</text>
+   </g>
+   <g id="patch_7">
+    <path d="M 440.354945 292.868585
+Q 440.354945 298.534488 440.354945 302.523339
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 442.354945 298.523339
+L 440.354945 302.523339
+L 438.354945 298.523339
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start" x="412.748182" y="333.809182" transform="rotate(-0 412.748182 333.809182)">h: lens-to-floor gap</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 376.408712 186.573109
+Q 435.755439 186.573109 493.425114 186.573109
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 489.425114 184.573109
+L 493.425114 186.573109
+L 489.425114 188.573109
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="503.237018" y="180.438273" transform="rotate(-0 503.237018 180.438273)">Forward</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="59.995091" y="165.101182" transform="rotate(-0 59.995091 165.101182)">SIDE</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_9">
+    <path d="M 197.889433 486.893583
+L 397.550567 486.893583
+L 397.550567 470.791878
+L 197.889433 470.791878
+z
+" clip-path="url(#p702c4fc77f)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 225.26233 470.791878
+L 370.17767 470.791878
+L 370.17767 398.334209
+L 225.26233 398.334209
+z
+" clip-path="url(#p702c4fc77f)" style="fill: #e4edf4; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 149.58432 527.147843
+L 181.787729 527.147843
+L 181.787729 438.58847
+L 149.58432 438.58847
+z
+" clip-path="url(#p702c4fc77f)" style="fill: #d5d9df; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 413.652271 527.147843
+L 445.85568 527.147843
+L 445.85568 438.58847
+L 413.652271 438.58847
+z
+" clip-path="url(#p702c4fc77f)" style="fill: #d5d9df; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 375.008181 449.859663
+L 403.991249 449.859663
+L 403.991249 417.656254
+L 375.008181 417.656254
+z
+" clip-path="url(#p702c4fc77f)" style="fill: #cbe9dd; stroke: #24598a; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 72.296139 527.147843
+L 523.143861 527.147843
+" clip-path="url(#p702c4fc77f)" style="fill: none; stroke: #666666; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="297.72" y="481.180621" transform="rotate(-0 297.72 481.180621)">Frame</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="297.72" y="436.900934" transform="rotate(-0 297.72 436.900934)">EV3</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="165.686024" y="485.206047" transform="rotate(-0 165.686024 485.206047)">R</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="429.753976" y="485.206047" transform="rotate(-0 429.753976 485.206047)">L</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="389.499715" y="436.095849" transform="rotate(-0 389.499715 436.095849)">G</text>
+   </g>
+   <g id="patch_14">
+    <path d="M 389.499715 412.435976
+Q 389.499715 394.310468 389.499715 377.862012
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 387.499715 381.862012
+L 389.499715 377.862012
+L 391.499715 381.862012
+" style="fill: none; stroke: #167d86; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="395.940397" y="367.74097" transform="rotate(-0 395.940397 367.74097)">Gyro sensing axis</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="80.346991" y="390.283357" transform="rotate(-0 80.346991 390.283357)">FRONT</text>
+   </g>
+  </g>
+  <g id="text_14">
+   <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="40.40064" transform="rotate(-0 44.658 40.40064)">PROJECT 01 / EV3 NAVIGATION</text>
+  </g>
+  <g id="text_15">
+   <text style="font-weight: 700; font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24598a" x="44.658" y="72.38448" transform="rotate(-0 44.658 72.38448)">02 / Side and front views</text>
+  </g>
+  <g id="text_16">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="44.658" y="98.47656" transform="rotate(-0 44.658 98.47656)">Sensor orientation and support geometry / conceptual positions / no fixed dimensions.</text>
+  </g>
+  <g id="text_17">
+   <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="44.658" y="812.2212" transform="rotate(-0 44.658 812.2212)">Build companion v2 / 22 Oct 2026 / physical assembly not yet validated</text>
+  </g>
+  <g id="text_18">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="550.782" y="812.2212" transform="rotate(-0 550.782 812.2212)">4</text>
+  </g>
+  <g id="text_19">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #167d86" x="44.658" y="593.3844" transform="rotate(-0 44.658 593.3844)">Mounting checks</text>
+  </g>
+  <g id="text_20">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="615.26808" transform="rotate(-0 44.658 615.26808)">Both driven tires must rest on the floor without chassis twist. The caster must roll freely</text>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="629.99748" transform="rotate(-0 44.658 629.99748)">and cross tile seams without lifting a driven wheel. Leave clearance so wheels do not rub</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="644.72688" transform="rotate(-0 44.658 644.72688)">axles, beams, cables, or sensor brackets.</text>
+  </g>
+  <g id="text_23">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="664.50636" transform="rotate(-0 44.658 664.50636)">Orient the gyro to measure yaw (turning about vertical); follow the official module. The</text>
+  </g>
+  <g id="text_24">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="679.23576" transform="rotate(-0 44.658 679.23576)">case position in this drawing does not define its internal sensing-axis orientation. A</text>
+  </g>
+  <g id="text_25">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="693.96516" transform="rotate(-0 44.658 693.96516)">hand-rotation test must confirm it.</text>
+  </g>
+  <g id="text_26">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="713.74464" transform="rotate(-0 44.658 713.74464)">Mount the color lens perpendicular and close to the floor without touching it. Try a 5-10</text>
+  </g>
+  <g id="text_27">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="728.47404" transform="rotate(-0 44.658 728.47404)">mm lens gap as an experimental starting range, then adjust using real readings and seam</text>
+  </g>
+  <g id="text_28">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start" x="44.658" y="743.20344" transform="rotate(-0 44.658 743.20344)">clearance. This range is a tuning suggestion, not a LEGO specification.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p440f235967">
+   <rect x="44.658" y="148.230382" width="506.124" height="191.713636"/>
+  </clipPath>
+  <clipPath id="p702c4fc77f">
+   <rect x="64.245287" y="366.1308" width="466.949426" height="185.1696"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+project-01/logs/*
+!project-01/logs/.gitkeep
+project-01/calibration/local.py
