@@ -37,7 +37,7 @@ def parse_arguments():
     parser.add_argument("--host", default=os.environ.get("EV3_HOST", "ev3dev.local"))
     parser.add_argument("--user", default=os.environ.get("EV3_USER", "robot"))
     parser.add_argument("--known-hosts", default=os.environ.get("EV3_KNOWN_HOSTS"))
-    parser.add_argument("command", choices=("deploy", "runtime", "inspect", "selftest",
+    parser.add_argument("command", choices=("deploy", "runtime", "inspect", "selftest", "color-check",
                                           "plan-demo", "plan", "monitor", "fetch-logs"))
     parser.add_argument("--samples", type=int, default=20)
     arguments = parser.parse_args()

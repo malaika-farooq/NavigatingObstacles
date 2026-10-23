@@ -1,5 +1,7 @@
 # EV3 build companion
 
+See [CURRENT_PLAN.md](../CURRENT_PLAN.md) for the actual build's completed checks and remaining measurements. Both motor forward signs and gyro CCW sign are confirmed -1; kit wheels are nominally 56 mm diameter. The remounted color sensor uses the user-accepted 29% black threshold. Wheel spacing remains deferred; the original printable guide is a build reference, not the current calibration record.
+
 Current builder-confirmed wiring: **left motor A, right motor B, gyro input 1, color input 4**. The PDF/SVG diagrams retain earlier proposed wiring and conceptual layouts; use `../src/config.py` and the actual front-caster build for current assignments.
 
 Open [the printable, 12-page build plan](ev3-build-plan.pdf). Start with page 1 and keep the linked official LEGO manuals open for exact part, pin, hole, and axle placement. Read the [adversarial review](adversarial-review.md) for the design's unresolved risks and the reasons behind revision 2.

@@ -1,5 +1,7 @@
 # Offline navigation development
 
+This document records the offline implementation phase. For subsequent connected tests, accepted 29% color threshold, confirmed signs, nominal 56 mm wheel diameters and the remaining plan, read [CURRENT_PLAN.md](CURRENT_PLAN.md). Historical statements here about unset calibration and unverified sensor/GC APIs are superseded by the current plan and calibration records. The full updated controller still needs on-brick runtime verification.
+
 This work does not connect to the EV3, change firmware, enable motor outputs, or fill in actual calibration. Robot-side code continues to use built-in modules and our own implementation only. Stay on the selected Pybricks 2 runtime.
 
 The current implementation is limited to the PDF's known-course navigation task. Small functions separate sample validation, odometry, steering, waypoint transitions and grid search. Intermediate variables name the physical quantities and units. The simulator and its logs are test support for the report; the optional plotting tool and unused seam-correction switch have been removed.

@@ -33,6 +33,17 @@ def monitor_devices(arguments):
         time.sleep(0.1)
 
 
+def check_color():
+    from hardware import ColorSensor, reflection_is_black
+    sensor = ColorSensor(config.COLOR_PORT)
+    reflection_percent = sensor.reflection()
+    threshold_percent = config.COLOR_BLACK_THRESHOLD_PERCENT
+    black_detected = reflection_is_black(reflection_percent, threshold_percent)
+    print("Reflection percent:", reflection_percent)
+    print("Black threshold percent:", threshold_percent)
+    print("Black detected:", black_detected)
+
+
 def configured_path():
     from planner import plan
     config.require_geometry()
@@ -74,6 +85,8 @@ def main(arguments):
         inspect_devices()
     elif command == "monitor":
         monitor_devices(arguments[1:])
+    elif command == "color-check":
+        check_color()
     elif command == "plan":
         print_path(configured_path())
     elif command == "plan-demo":
@@ -84,7 +97,7 @@ def main(arguments):
         from selftest import run
         run()
     else:
-        raise ValueError("Commands: inspect, selftest, simulate-demo, plan-demo, plan, monitor [samples]")
+        raise ValueError("Commands: inspect, selftest, color-check, simulate-demo, plan-demo, plan, monitor [samples]")
 
 
 if __name__ == "__main__":

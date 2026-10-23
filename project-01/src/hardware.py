@@ -166,6 +166,15 @@ class Gyro(Sensor):
         return self.sign * self.value("GYRO-ANG")
 
 
+def reflection_is_black(reflection_percent, threshold_percent):
+    """Classify one valid reflection sample; equality belongs to black."""
+    if not 0 <= reflection_percent <= 100:
+        raise ValueError("Reflection must be between 0 and 100 percent")
+    if not 0 <= threshold_percent <= 100:
+        raise ValueError("Threshold must be between 0 and 100 percent")
+    return reflection_percent <= threshold_percent
+
+
 class ColorSensor(Sensor):
     def __init__(self, port):
         Sensor.__init__(self, port, "lego-ev3-color")
@@ -175,3 +184,7 @@ class ColorSensor(Sensor):
 
     def reflection(self):
         return self.value("COL-REFLECT")
+
+    def is_black(self, threshold_percent):
+        reflection_percent = self.reflection()
+        return reflection_is_black(reflection_percent, threshold_percent)
