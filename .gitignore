@@ -5,3 +5,5 @@ __pycache__/
 project-01/logs/*
 !project-01/logs/.gitkeep
 project-01/calibration/local.py
+project-02/logs/*
+!project-02/logs/.gitkeep
