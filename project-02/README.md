@@ -56,6 +56,12 @@ Deployment uploads a new release, verifies every source file's SHA-256, and
 activates it without starting a program. Project 1's deployment stays separate.
 `EV3_HOST` or `--host` can override the default SSH alias.
 
+The release also includes `fire_alert.wav`, a 40-second robot alarm. Its opening
+data-like bursts are simulated, followed by an eight-second attention tone and
+a female announcement; the alarm resumes after the announcement. The voice is
+the community-created CRS Mara approximation, not the original NOAA Donna.
+The behavior controller does not yet trigger the audio.
+
 The monitor captures all discovered sensors and motor telemetry as JSON lines
 under `project-02/logs/` on the laptop. `--mode current` leaves sensor modes alone;
 `rgb`, `reflect`, and `color` temporarily change only input 1's color mode and

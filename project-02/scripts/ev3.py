@@ -21,7 +21,7 @@ def ssh(host, command):
 
 
 def deploy(host):
-    files = sorted((PROJECT / "src").glob("*.py"))
+    files = sorted((PROJECT / "src").glob("*.py")) + [PROJECT / "audio" / "fire_alert.wav"]
     checksums = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=PROJECT, text=True).strip()
